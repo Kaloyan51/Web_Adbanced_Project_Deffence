@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SellingMobileApp.Web.Data;
+using SellingMobileApp.Data;
 
 namespace SellingMobileApp.Web
 {
