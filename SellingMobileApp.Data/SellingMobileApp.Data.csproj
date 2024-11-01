@@ -19,4 +19,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SellingMobileApp.Common\SellingMobileApp.Common.csproj" />
+    <ProjectReference Include="..\SellingMobileApp.Data.Models\SellingMobileApp.Data.Models.csproj" />
+  </ItemGroup>
+
 </Project>
