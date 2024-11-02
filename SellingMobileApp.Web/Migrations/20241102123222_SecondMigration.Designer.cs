@@ -12,8 +12,8 @@ using SellingMobileApp.Data;
 namespace SellingMobileApp.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241101125712_InitialMigation")]
-    partial class InitialMigation
+    [Migration("20241102123222_SecondMigration")]
+    partial class SecondMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,6 +89,11 @@ namespace SellingMobileApp.Web.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -140,6 +145,10 @@ namespace SellingMobileApp.Web.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -227,6 +236,31 @@ namespace SellingMobileApp.Web.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SellingMobileApp.Data.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Id of the category");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .HasComment("More information for phone status");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("Name of the category: new, used or recycled");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("SellingMobileApp.Data.Models.CreateListing", b =>
                 {
                     b.Property<int>("Id")
@@ -236,19 +270,26 @@ namespace SellingMobileApp.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
                         .HasComment("Description detailing the specific phone");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OwnerId")
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PhoneCharacteristicsId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("Price")
-                        .IsRequired()
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)")
                         .HasComment("Price of the phone");
 
@@ -258,38 +299,97 @@ namespace SellingMobileApp.Web.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
                         .HasComment("Title of the listing");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("OwnerId");
+
+                    b.HasIndex("PhoneCharacteristicsId");
 
                     b.ToTable("CreateListings");
                 });
 
-            modelBuilder.Entity("SellingMobileApp.Data.Models.User", b =>
+            modelBuilder.Entity("SellingMobileApp.Data.Models.PhoneModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasComment("Id of the user");
+                        .HasComment("Id of the phoneModel");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Brand")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasComment("Email of the user");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("ManufactureYear")
+                        .HasColumnType("int")
+                        .HasComment("Manufacture Year of the phone");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("Model of the phone");
+
+                    b.Property<int>("RamCapacity")
+                        .HasColumnType("int")
+                        .HasComment("Ram capacity of the phone in GB");
+
+                    b.Property<int>("StorageCapacity")
+                        .HasColumnType("int")
+                        .HasComment("Storage capacity of the phone in GB");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PhoneModels");
+                });
+
+            modelBuilder.Entity("SellingMobileApp.Data.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Id of review");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ListingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int")
+                        .HasComment("Rating of current listing");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ListingId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("SellingMobileApp.Data.Models.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasComment("Name of the user");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -345,13 +445,49 @@ namespace SellingMobileApp.Web.Migrations
 
             modelBuilder.Entity("SellingMobileApp.Data.Models.CreateListing", b =>
                 {
+                    b.HasOne("SellingMobileApp.Data.Models.Category", null)
+                        .WithMany("Listings")
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("SellingMobileApp.Data.Models.User", "Owner")
                         .WithMany("Listings")
                         .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SellingMobileApp.Data.Models.PhoneModel", "PhoneCharacteristics")
+                        .WithMany()
+                        .HasForeignKey("PhoneCharacteristicsId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Owner");
+
+                    b.Navigation("PhoneCharacteristics");
+                });
+
+            modelBuilder.Entity("SellingMobileApp.Data.Models.Review", b =>
+                {
+                    b.HasOne("SellingMobileApp.Data.Models.CreateListing", "CreateListing")
+                        .WithMany()
+                        .HasForeignKey("ListingId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SellingMobileApp.Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("CreateListing");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SellingMobileApp.Data.Models.Category", b =>
+                {
+                    b.Navigation("Listings");
                 });
 
             modelBuilder.Entity("SellingMobileApp.Data.Models.User", b =>

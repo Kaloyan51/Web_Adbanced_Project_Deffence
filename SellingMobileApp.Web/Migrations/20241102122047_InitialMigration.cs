@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SellingMobileApp.Web.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigation : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +30,8 @@ namespace SellingMobileApp.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true, comment: "Name of the user"),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -51,17 +53,34 @@ namespace SellingMobileApp.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false, comment: "Id of the user")
+                    Id = table.Column<int>(type: "int", nullable: false, comment: "Id of the category")
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "Name of the user"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "Email of the user")
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, comment: "Name of the category: new, used or recycled"),
+                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true, comment: "More information for phone status")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PhoneModels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false, comment: "Id of the phoneModel")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Brand = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, comment: "Model of the phone"),
+                    ManufactureYear = table.Column<int>(type: "int", nullable: false, comment: "Manufacture Year of the phone"),
+                    StorageCapacity = table.Column<int>(type: "int", nullable: false, comment: "Storage capacity of the phone in GB"),
+                    RamCapacity = table.Column<int>(type: "int", nullable: false, comment: "Ram capacity of the phone in GB")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhoneModels", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,22 +195,58 @@ namespace SellingMobileApp.Web.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false, comment: "Identifier for the listing (ad)")
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "Title of the listing"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "Description detailing the specific phone"),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, comment: "Title of the listing"),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false, comment: "Description detailing the specific phone"),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false, comment: "Price of the phone"),
                     ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "Date of the listing publication"),
-                    OwnerId = table.Column<int>(type: "int", nullable: false)
+                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PhoneCharacteristicsId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CreateListings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CreateListings_Users_OwnerId",
+                        name: "FK_CreateListings_AspNetUsers_OwnerId",
                         column: x => x.OwnerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CreateListings_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CreateListings_PhoneModels_PhoneCharacteristicsId",
+                        column: x => x.PhoneCharacteristicsId,
+                        principalTable: "PhoneModels",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false, comment: "Id of review")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ListingId = table.Column<int>(type: "int", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false, comment: "Rating of current listing")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Reviews_CreateListings_ListingId",
+                        column: x => x.ListingId,
+                        principalTable: "CreateListings",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -234,9 +289,29 @@ namespace SellingMobileApp.Web.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CreateListings_CategoryId",
+                table: "CreateListings",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CreateListings_OwnerId",
                 table: "CreateListings",
                 column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CreateListings_PhoneCharacteristicsId",
+                table: "CreateListings",
+                column: "PhoneCharacteristicsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_ListingId",
+                table: "Reviews",
+                column: "ListingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_UserId",
+                table: "Reviews",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -258,16 +333,22 @@ namespace SellingMobileApp.Web.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CreateListings");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "CreateListings");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "PhoneModels");
         }
     }
 }

@@ -31,4 +31,8 @@
     <ProjectReference Include="..\SellingMobileApp.Web.ViewModels\SellingMobileApp.Web.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SellingMobileApp.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace SellingMobileApp.Data.Models
 {
-    public class User
+    public class User : IdentityUser
     {
         [Key]
         [Comment ("Id of the user")]
-        public int Id { get; set; }
+        public  string Id { get; set; }
 
         [Required]
         [Comment ("Name of the user")]
@@ -20,6 +22,8 @@ namespace SellingMobileApp.Data.Models
 
         [Required]
         [Comment ("Email of the user")]
+        [EmailAddress]
+        [MaxLength (AppConstants.EmailMaxLength, ErrorMessage = "Имейлът не може да бъде повече от 256 символа")]
         public string Email { get; set; } = null!;
 
         [Comment ("List of the users listings")]
