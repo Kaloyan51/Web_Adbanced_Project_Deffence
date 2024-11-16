@@ -18,13 +18,20 @@ namespace SellingMobileApp.Data.Models
 
         [Required]
         [Comment ("Name of the user")]
+        [MaxLength (AppConstants.UserNameMaxLength)]
         public string Name { get; set; } = null!;
 
         [Required]
-        [Comment ("Email of the user")]
+        [Comment("Email of the user")]
         [EmailAddress]
-        [MaxLength (AppConstants.EmailMaxLength, ErrorMessage = "Имейлът не може да бъде повече от 256 символа")]
-        public string Email { get; set; } = null!;
+        [MaxLength(AppConstants.EmailMaxLength, ErrorMessage = "Имейлът не може да бъде повече от 256 символа")]
+        public string UserEmail { get; set; } = null!;
+
+        [Required]
+        [Phone]
+        [Comment("Phone number of the user")]
+        [MaxLength(AppConstants.PhoneNumberMaxLength, ErrorMessage = "Телефонният номер трябва да бъде между 4 и 15 символа")]
+        public string UserPhoneNumber { get; set; } = null!;
 
         [Comment ("List of the users listings")]
         public virtual ICollection<CreateListing> Listings { get; set; } = new List<CreateListing>();
