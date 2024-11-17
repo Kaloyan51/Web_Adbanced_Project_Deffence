@@ -18,6 +18,8 @@
         public const int UserNameMaxLength = 50;
         public const int PhoneNumberMinLength = 4;
         public const int PhoneNumberMaxLength = 15;
+        public const int PasswordMinLength = 6;
+        public const int PasswordMaxLength = 25;
 
         //PhoneModel
         public const int BrandMinLength = 3;

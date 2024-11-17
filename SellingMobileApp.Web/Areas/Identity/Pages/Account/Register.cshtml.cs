@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using SellingMobileApp.Common;
 
 namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
 {
@@ -70,35 +71,32 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-        }
 
+            // Новите полета
+            [Required(ErrorMessage = "Потребителското име е задължително")]
+            [StringLength(AppConstants.UserNameMaxLength, MinimumLength = AppConstants.UserNameMinLength, ErrorMessage = "Потребителското име трябва да бъде между 3 и 50 символа")]
+            public string UserName { get; set; } = string.Empty;
+
+            [Required(ErrorMessage = "Телефонният номер е задължителен")]
+            [Phone(ErrorMessage = "Невалиден телефонен номер")]
+            [StringLength(AppConstants.PhoneNumberMaxLength, MinimumLength = AppConstants.PhoneNumberMinLength, ErrorMessage = "Телефонният номер трябва да бъде между 4 и 15 символа")]
+            public string PhoneNumber { get; set; } = string.Empty;
+        }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -110,12 +108,19 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
+                // Добавяме UserName и PhoneNumber
+                await _userManager.SetUserNameAsync(user, Input.UserName);  // Използваме потребителското име от InputModel
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                // Добавяме телефонния номер
+                await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);  // Използваме телефонния номер от InputModel
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -144,6 +149,7 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -177,4 +183,5 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
     }
+
 }
