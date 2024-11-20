@@ -113,13 +113,13 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                // Добавяме UserName и PhoneNumber
-                await _userManager.SetUserNameAsync(user, Input.UserName);  // Използваме потребителското име от InputModel
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                // Присвояваме потребителското име и телефонния номер
+                user.UserName = Input.UserName; // Потребителското име от InputModel
+                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None); // Записваме потребителското име
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None); // Записваме имейла
 
                 // Добавяме телефонния номер
-                await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);  // Използваме телефонния номер от InputModel
+                await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber); // Записваме телефонния номер
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -183,5 +183,4 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
     }
-
 }
