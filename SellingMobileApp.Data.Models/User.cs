@@ -14,7 +14,7 @@ namespace SellingMobileApp.Data.Models
     {
         [Key]
         [Comment ("Id of the user")]
-        public  string Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [Comment ("Name of the user")]

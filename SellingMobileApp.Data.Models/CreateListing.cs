@@ -51,6 +51,8 @@ namespace SellingMobileApp.Data.Models
         public int PhoneCharacteristicsId { get; set; }
 
         [ForeignKey(nameof(PhoneCharacteristicsId))]
-        public virtual PhoneModel PhoneCharacteristics { get; set; } = null!;
+        public  PhoneModel PhoneCharacteristics { get; set; } = null!;
+
+        public virtual ICollection<UserCreateListing> UsersCreateListings { get; set; } = new List<UserCreateListing>();
     }
 }

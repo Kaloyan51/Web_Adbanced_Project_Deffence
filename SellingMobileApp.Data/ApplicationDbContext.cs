@@ -20,6 +20,9 @@ namespace SellingMobileApp.Data
             
             builder.Entity<User>().ToTable("Users");
 
+            builder.Entity<UserCreateListing>()
+                .HasKey(uc => new { uc.UserId, uc.ListingId });
+
             // Задаване на прост ключ за CreateListing
             builder.Entity<CreateListing>()
                 .HasKey(cl => cl.Id); // Слагаме основен ключ за CreateListing
@@ -78,5 +81,7 @@ namespace SellingMobileApp.Data
         public virtual DbSet<Category> Categories { get; set; }
 
         public virtual DbSet<Review> Reviews { get; set; }
+
+        public virtual DbSet<UserCreateListing> UsersCreateListings { get; set; }
     }
 }
