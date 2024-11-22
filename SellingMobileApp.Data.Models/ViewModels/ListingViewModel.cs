@@ -32,9 +32,9 @@ namespace SellingMobileApp.Data.Models.ViewModels
         [Display(Name = "Дата на публикуване")]
         public DateTime ReleaseDate { get; set; }
 
-        public int PhoneModelId { get; set; }
+        public int PhoneCharacteristicId { get; set; }
 
-        public PhoneModelViewModel PhoneModel { get; set; } = new PhoneModelViewModel();
+        public PhoneModelViewModel PhoneCharacteristic { get; set; } = new PhoneModelViewModel();
 
         public CategoryListingViewModel CategoryListing { get; set; } = new CategoryListingViewModel();
 

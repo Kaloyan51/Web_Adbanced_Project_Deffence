@@ -36,22 +36,22 @@ namespace SellingMobileApp.Data.Models
         [Comment ("Date of the listing publication")]
         public DateTime ReleaseDate { get; set; }
 
-        public CreateListing()
+        /*public CreateListing()
         {
             ReleaseDate = DateTime.Now;
-        }
+        }*/
 
         [Required]
-        public string OwnerId { get; set; }
+        public string OwnerId { get; set; } = string.Empty!;
 
         [ForeignKey(nameof(OwnerId))]
         public virtual User Owner { get; set; } = null!;
 
         [Required]
-        public int PhoneCharacteristicsId { get; set; }
+        public int PhoneCharacteristicId { get; set; }
 
-        [ForeignKey(nameof(PhoneCharacteristicsId))]
-        public  PhoneModel PhoneCharacteristics { get; set; } = null!;
+        [ForeignKey(nameof(PhoneCharacteristicId))]
+        public  PhoneModel PhoneCharacteristic { get; set; } = null!;
 
         public virtual ICollection<UserCreateListing> UsersCreateListings { get; set; } = new List<UserCreateListing>();
     }

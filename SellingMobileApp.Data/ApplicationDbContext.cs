@@ -7,7 +7,7 @@ using System.Reflection.Emit;
 
 namespace SellingMobileApp.Data
 {
-    public class ApplicationDbContext : IdentityDbContext { 
+    public class ApplicationDbContext : IdentityDbContext<User> { 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         { 
@@ -36,9 +36,9 @@ namespace SellingMobileApp.Data
 
             // Връзка CreateListing -> PhoneModel
             builder.Entity<CreateListing>()
-                .HasOne(cl => cl.PhoneCharacteristics)
+                .HasOne(cl => cl.PhoneCharacteristic)
                 .WithMany() // Ако искате да имате обратно множество, добавете 'WithMany(p => p.CreateListings)'
-                .HasForeignKey(cl => cl.PhoneCharacteristicsId)
+                .HasForeignKey(cl => cl.PhoneCharacteristicId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // Връзка Review -> User

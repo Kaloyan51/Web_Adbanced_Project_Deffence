@@ -15,9 +15,9 @@
 
             <!-- Email field -->
             <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <input asp-for="Input.UserEmail" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.UserEmail">UserEmail</label>
+                <span asp-validation-for="Input.UserEmail" class="text-danger"></span>
             </div>
 
             <!-- Password field -->
@@ -36,16 +36,16 @@
 
             <!-- New UserName field -->
             <div class="form-floating mb-3">
-                <input asp-for="Input.UserName" class="form-control" aria-required="true" placeholder="UserName" />
-                <label asp-for="Input.UserName">UserName</label>
-                <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                <input asp-for="Input.Name" class="form-control" aria-required="true" placeholder="UserName" />
+                <label asp-for="Input.Name">Name</label>
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
             </div>
 
             <!-- New PhoneNumber field -->
             <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="Phone Number" />
-                <label asp-for="Input.PhoneNumber">Phone Number</label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <input asp-for="Input.UserPhoneNumber" class="form-control" aria-required="true" placeholder="Phone Number" />
+                <label asp-for="Input.UserPhoneNumber">Phone Number</label>
+                <span asp-validation-for="Input.UserPhoneNumber" class="text-danger"></span>
             </div>
 
             <!-- Submit Button -->

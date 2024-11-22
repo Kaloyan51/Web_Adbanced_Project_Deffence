@@ -19,22 +19,23 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SellingMobileApp.Common;
+using SellingMobileApp.Data.Models;
 
 namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly IUserStore<User> _userStore;
+        private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<User> userManager,
+            IUserStore<User> userStore,
+            SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -46,35 +47,19 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string ReturnUrl { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
-            public string Email { get; set; }
+            public string UserEmail { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -87,15 +72,16 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            // Новите полета
-            [Required(ErrorMessage = "Потребителското име е задължително")]
-            [StringLength(AppConstants.UserNameMaxLength, MinimumLength = AppConstants.UserNameMinLength, ErrorMessage = "Потребителското име трябва да бъде между 3 и 50 символа")]
-            public string UserName { get; set; } = string.Empty;
+            
+
+            [Required(ErrorMessage = "Името е задължително")]
+            [StringLength(AppConstants.UserNameMaxLength, MinimumLength = AppConstants.UserNameMinLength, ErrorMessage = "Името трябва да бъде между 3 и 50 символа")]
+            public string Name { get; set; } = string.Empty;
 
             [Required(ErrorMessage = "Телефонният номер е задължителен")]
             [Phone(ErrorMessage = "Невалиден телефонен номер")]
             [StringLength(AppConstants.PhoneNumberMaxLength, MinimumLength = AppConstants.PhoneNumberMinLength, ErrorMessage = "Телефонният номер трябва да бъде между 4 и 15 символа")]
-            public string PhoneNumber { get; set; } = string.Empty;
+            public string UserPhoneNumber { get; set; } = string.Empty;
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -113,13 +99,10 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                // Присвояваме потребителското име и телефонния номер
-                user.UserName = Input.UserName; // Потребителското име от InputModel
-                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None); // Записваме потребителското име
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None); // Записваме имейла
-
-                // Добавяме телефонния номер
-                await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber); // Записваме телефонния номер
+                user.UserName = Input.Name;
+                user.PhoneNumber = Input.UserPhoneNumber; // Задаваме телефонния номер
+                await _userStore.SetUserNameAsync(user, Input.Name, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, Input.UserEmail, CancellationToken.None);
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -136,12 +119,12 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    await _emailSender.SendEmailAsync(Input.UserEmail, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.UserEmail, returnUrl = returnUrl });
                     }
                     else
                     {
@@ -156,31 +139,31 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private User CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                var user =  Activator.CreateInstance<User>();
+                user.Id = Guid.NewGuid().ToString();
+                return user;    
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
+                    $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor.");
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<User> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<User>)_userStore;
         }
     }
 }
