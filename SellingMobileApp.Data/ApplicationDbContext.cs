@@ -20,6 +20,8 @@ namespace SellingMobileApp.Data
             
             builder.Entity<User>().ToTable("Users");
 
+            builder.Entity<User>().ToTable("Users").Property(u => u.Name).IsRequired();
+
             builder.Entity<UserCreateListing>()
                 .HasKey(uc => new { uc.UserId, uc.ListingId });
 

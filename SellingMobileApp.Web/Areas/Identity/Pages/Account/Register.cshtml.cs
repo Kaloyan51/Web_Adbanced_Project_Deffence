@@ -99,8 +99,11 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                user.UserName = Input.Name;
-                user.PhoneNumber = Input.UserPhoneNumber; // Задаваме телефонния номер
+                user.Name = Input.Name;
+                //user.PhoneNumber = Input.UserPhoneNumber;
+                user.UserEmail = Input.UserEmail;
+                user.UserPhoneNumber = Input.UserPhoneNumber;
+
                 await _userStore.SetUserNameAsync(user, Input.Name, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.UserEmail, CancellationToken.None);
 
