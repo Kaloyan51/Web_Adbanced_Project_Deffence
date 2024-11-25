@@ -31,5 +31,6 @@ namespace SellingMobileApp.Data.Models
         [Range (AppConstants.ReviewMinLength, AppConstants.ReviewMaxength)]
         [Comment ("Rating of current listing")]
         public int Rating { get; set; }
+        public string UserName { get; set; } = null!;
     }
 }

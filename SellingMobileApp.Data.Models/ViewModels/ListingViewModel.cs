@@ -38,6 +38,8 @@ namespace SellingMobileApp.Data.Models.ViewModels
 
         public CategoryListingViewModel CategoryListing { get; set; } = new CategoryListingViewModel();
 
+        public ReviewViewModel Reviews { get; set; } = new ReviewViewModel();
+        
         public int CategoryId { get; set; }
 
         public string OwnerId { get; set; } = string.Empty;

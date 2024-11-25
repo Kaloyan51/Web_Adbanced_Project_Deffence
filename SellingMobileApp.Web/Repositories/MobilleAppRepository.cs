@@ -44,23 +44,7 @@ namespace SellingMobileApp.Web.Repositories
 
         public async Task<ListingViewModel> GetAddModelAsync()
         {
-            var phoneModel = await context.PhoneModels
-                .Select(phM => new PhoneModelViewModel
-                {
-                    Id = phM.Id,
-                    Brand = phM.Brand,
-                    Model = phM.Model,
-                    ManufactureYear = phM.ManufactureYear,
-                    StorageCapacity = phM.StorageCapacity,
-                    RamCapacity = phM.RamCapacity
-
-                })
-                .ToListAsync();
-
-            /*var model = new ListingViewModel
-            {
-               
-            }*/
+            return new ListingViewModel();
             throw new NotImplementedException();
         }
 

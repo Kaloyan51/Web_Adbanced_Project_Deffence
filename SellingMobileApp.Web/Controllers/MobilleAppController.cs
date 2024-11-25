@@ -16,7 +16,21 @@ namespace SellingMobileApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            ListingViewModel model =
+            ListingViewModel model = await service.GetAddModelAsync();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(ListingViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            string userId = GetUserId();
+            await service.AddListingAsync(model, userId);
+            return RedirectToAction("Index");
         }
     }
 }
