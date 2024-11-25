@@ -9,16 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using SellingMobileApp.Web.Areas.Identity.Pages.Account;
+using SellingMobileApp.Data.Models;
 
 namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, UserManager<IdentityUser> userManager)
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, UserManager<User> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
@@ -38,7 +39,7 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
         {
             [Required]
             //[EmailAddress]
-            public string Email { get; set; }
+            public string Name { get; set; }
   
 
             [Required]
@@ -83,7 +84,7 @@ namespace SellingMobileApp.Web.Areas.Identity.Pages.Account
                 }*/
 
                 // Try to sign in the user using the email and password
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input.Name, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
                 if (result.Succeeded)
                 {

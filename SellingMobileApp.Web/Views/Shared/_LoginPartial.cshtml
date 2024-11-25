@@ -8,8 +8,14 @@
     {
         <li class="nav-item">
             @{
-                var user = UserManager.GetUserAsync(User).Result;
-                var userName = user?.UserName;
+                // Извличаме UserId от текущо логнатия потребител
+                var userId = UserManager.GetUserId(User);
+
+                // Проверяваме дали потребителят е намерен в базата
+                var user = UserManager.Users.FirstOrDefault(u => u.Id == userId);
+
+                // Извличаме Name, или използваме "User" като fallback
+                var userName = user?.Name ?? "User";
             }
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @userName</a>
         </li>

@@ -1,4 +1,5 @@
-﻿using SellingMobileApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SellingMobileApp.Data;
 using SellingMobileApp.Data.Models;
 using SellingMobileApp.Data.Models.ViewModels;
 using SellingMobileApp.Web.Repositories;
@@ -39,6 +40,28 @@ namespace SellingMobileApp.Web.Repositories
             await context.SaveChangesAsync();
 
             //throw new NotImplementedException();
+        }
+
+        public async Task<ListingViewModel> GetAddModelAsync()
+        {
+            var phoneModel = await context.PhoneModels
+                .Select(phM => new PhoneModelViewModel
+                {
+                    Id = phM.Id,
+                    Brand = phM.Brand,
+                    Model = phM.Model,
+                    ManufactureYear = phM.ManufactureYear,
+                    StorageCapacity = phM.StorageCapacity,
+                    RamCapacity = phM.RamCapacity
+
+                })
+                .ToListAsync();
+
+            /*var model = new ListingViewModel
+            {
+               
+            }*/
+            throw new NotImplementedException();
         }
 
         /*public Task<IEnumerable<AllListingsViewModel>> GetAllListingsByLocationAsync()

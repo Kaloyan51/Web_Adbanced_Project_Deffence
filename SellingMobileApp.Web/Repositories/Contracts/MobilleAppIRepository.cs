@@ -7,6 +7,8 @@ namespace SellingMobileApp.Web.Repositories.Contracts
     {
         Task AddListingAsync(ListingViewModel listing, string userId);
 
+        Task<ListingViewModel> GetAddModelAsync();
+
         /*Task<IEnumerable<AllListingsViewModel>> GetAllListingsByLocationAsync();
 
         Task<T> GetByIdAsync(int id);

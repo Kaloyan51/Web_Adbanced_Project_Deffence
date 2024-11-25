@@ -1,11 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SellingMobileApp.Web.ViewModels;
 using System.Diagnostics;
 
 namespace SellingMobileApp.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
+        [AllowAnonymous]
         /*private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -13,15 +15,20 @@ namespace SellingMobileApp.Web.Controllers
             _logger = logger;
         }*/
 
-        public HomeController()
-        {
-            
-        }
+        /* public HomeController()
+         {
+
+         }*/
 
         public IActionResult Index()
         {
             ViewData["Title"] = "Home Page";
             ViewData["Message"] = "Welcome to selling phones app!";
+
+            /*if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                return RedirectToAction("All", "Game");
+            }*/
 
             return View();
         }
