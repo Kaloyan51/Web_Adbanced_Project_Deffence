@@ -26,7 +26,7 @@ namespace SellingMobileApp.Data.Models.ViewModels
         [Required]
         [Display(Name = "Цена")]
         [Range((double)AppConstants.PriceMinValue, (double)AppConstants.PriceMaxValue,
-        ErrorMessage = "Цената трябва да бъде между 5.00 и 10,000лв")]
+        ErrorMessage = "Цената трябва да бъде между 5.00 и 10.000лв")]
         public decimal Price { get; set; }
 
         [Display(Name = "Дата на публикуване")]

@@ -1,0 +1,86 @@
+﻿@model SellingMobileApp.Data.Models.ViewModels.ListingViewModel
+
+@{
+    ViewData["Title"] = "Добавяне на нова обява";
+}
+
+<h2>Добавяне на нова обява</h2>
+
+<form asp-action="Add" method="post">
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageUrl" class="control-label"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReleaseDate" class="control-label"></label>
+        <input asp-for="ReleaseDate" class="form-control" type="date" />
+        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+    </div>
+
+    <h3>Телефонни характеристики</h3>
+
+    <div class="form-group">
+        <label asp-for="PhoneCharacteristic.Brand" class="control-label">Марка</label>
+        <input asp-for="PhoneCharacteristic.Brand" class="form-control" />
+        <span asp-validation-for="PhoneCharacteristic.Brand" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneCharacteristic.Model" class="control-label">Модел</label>
+        <input asp-for="PhoneCharacteristic.Model" class="form-control" />
+        <span asp-validation-for="PhoneCharacteristic.Model" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneCharacteristic.ManufactureYear" class="control-label">Година на производство</label>
+        <input asp-for="PhoneCharacteristic.ManufactureYear" class="form-control" type="number" />
+        <span asp-validation-for="PhoneCharacteristic.ManufactureYear" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneCharacteristic.StorageCapacity" class="control-label">Вътрешна памет (GB)</label>
+        <input asp-for="PhoneCharacteristic.StorageCapacity" class="form-control" type="number" />
+        <span asp-validation-for="PhoneCharacteristic.StorageCapacity" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneCharacteristic.RamCapacity" class="control-label">RAM памет (GB)</label>
+        <input asp-for="PhoneCharacteristic.RamCapacity" class="form-control" type="number" />
+        <span asp-validation-for="PhoneCharacteristic.RamCapacity" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryListing" class="control-label">Категория</label>
+        <select asp-for="CategoryListing" class="form-control">
+            <option value="Нов">Нов</option>
+            <option value="Употребяван">Употребяван</option>
+        </select>
+        <span asp-validation-for="CategoryListing" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Добави обявата</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

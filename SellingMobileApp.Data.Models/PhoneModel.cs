@@ -39,5 +39,6 @@ namespace SellingMobileApp.Data.Models
         [Range(AppConstants.RamCapacityMinLength, AppConstants.RamCapacityMaxLength, ErrorMessage = "RAM капацитетът трябва да бъде между 1 и 512 GB")]
         public int RamCapacity { get; set; }
 
+        
     }
 }

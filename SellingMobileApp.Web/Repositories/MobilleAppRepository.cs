@@ -26,6 +26,20 @@ namespace SellingMobileApp.Web.Repositories
                 throw new InvalidOperationException("Invalid date format.");
             }
 
+            var phoneModel = new PhoneModel
+            {
+                Brand = listing.PhoneCharacteristic.Brand,
+                Model = listing.PhoneCharacteristic.Model,
+                ManufactureYear = listing.PhoneCharacteristic.ManufactureYear,
+                StorageCapacity = listing.PhoneCharacteristic.StorageCapacity,
+                RamCapacity = listing.PhoneCharacteristic.RamCapacity
+            };
+
+            // Добавете го в базата данни
+            await context.PhoneModels.AddAsync(phoneModel);
+            await context.SaveChangesAsync();
+
+
             var listingData = new CreateListing
             {
                 Title = listing.Title,
@@ -33,7 +47,7 @@ namespace SellingMobileApp.Web.Repositories
                 ImageUrl = listing.ImageUrl,
                 OwnerId = listing.OwnerId,
                 ReleaseDate = listing.ReleaseDate,
-                PhoneCharacteristicId = listing.PhoneCharacteristicId
+                PhoneCharacteristicId = phoneModel.Id
             };
 
             await context.CreateListings.AddAsync(listingData);

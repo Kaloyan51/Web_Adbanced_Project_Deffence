@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SellingMobileApp.Data;
 using SellingMobileApp.Data.Models;
+using SellingMobileApp.Web.Repositories.Contracts;
+using SellingMobileApp.Web.Repositories;
 
 namespace SellingMobileApp.Web
 {
@@ -27,6 +29,8 @@ namespace SellingMobileApp.Web
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<MobilleAppIRepository, MobilleAppRepository>();
 
             var app = builder.Build();
 
