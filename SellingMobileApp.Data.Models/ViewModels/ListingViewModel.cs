@@ -43,5 +43,7 @@ namespace SellingMobileApp.Data.Models.ViewModels
         public int CategoryId { get; set; }
 
         public string UserId { get; set; } = string.Empty;
+
+        public virtual IEnumerable<UserViewModel>? Users { get; set; }
     }
 }

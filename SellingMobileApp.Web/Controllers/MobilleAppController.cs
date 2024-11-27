@@ -23,7 +23,7 @@ namespace SellingMobileApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(ListingViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }

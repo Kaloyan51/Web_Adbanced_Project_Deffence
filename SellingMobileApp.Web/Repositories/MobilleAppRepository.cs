@@ -45,7 +45,7 @@ namespace SellingMobileApp.Web.Repositories
                 Title = listing.Title,
                 Description = listing.Description,
                 ImageUrl = listing.ImageUrl,
-                UserId = listing.UserId,
+                UserId = userId,
                 ReleaseDate = DateTime.Now,
                 PhoneCharacteristicId = phoneModel.Id
             };
