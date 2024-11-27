@@ -38,10 +38,10 @@ namespace SellingMobileApp.Data.Models
 
 
         [Required]
-        public string OwnerId { get; set; } = string.Empty!;
+        public string UserId { get; set; } = string.Empty!;
 
-        [ForeignKey(nameof(OwnerId))]
-        public virtual User Owner { get; set; } = null!;
+        [ForeignKey(nameof(UserId))]
+        public virtual User User { get; set; } = null!;
 
         [Required]
         public int PhoneCharacteristicId { get; set; }

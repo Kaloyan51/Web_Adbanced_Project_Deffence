@@ -16,6 +16,6 @@ namespace SellingMobileApp.Data.Models.ViewModels
  
         public decimal Price { get; set; }
 
-        public int ManufactureYear { get; set; }
+        public DateTime ManufactureYear { get; set; }
     }
 }

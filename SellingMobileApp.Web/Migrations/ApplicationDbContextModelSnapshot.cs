@@ -181,7 +181,7 @@ namespace SellingMobileApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("SellingMobileApp.Data.Models.CreateListing", b =>
@@ -234,7 +234,7 @@ namespace SellingMobileApp.Web.Migrations
 
                     b.HasIndex("PhoneCharacteristicId");
 
-                    b.ToTable("CreateListings");
+                    b.ToTable("CreateListings", (string)null);
                 });
 
             modelBuilder.Entity("SellingMobileApp.Data.Models.PhoneModel", b =>
@@ -271,7 +271,7 @@ namespace SellingMobileApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PhoneModels");
+                    b.ToTable("PhoneModels", (string)null);
                 });
 
             modelBuilder.Entity("SellingMobileApp.Data.Models.Review", b =>
@@ -304,7 +304,7 @@ namespace SellingMobileApp.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("SellingMobileApp.Data.Models.User", b =>
@@ -403,7 +403,7 @@ namespace SellingMobileApp.Web.Migrations
 
                     b.HasIndex("ListingId");
 
-                    b.ToTable("UsersCreateListings");
+                    b.ToTable("UsersCreateListings", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

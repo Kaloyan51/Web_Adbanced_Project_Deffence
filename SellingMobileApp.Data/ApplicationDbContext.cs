@@ -31,9 +31,9 @@ namespace SellingMobileApp.Data
 
             // Връзка CreateListing -> User
             builder.Entity<CreateListing>()
-                .HasOne(cl => cl.Owner)
+                .HasOne(cl => cl.User)
                 .WithMany(u => u.Listings)
-                .HasForeignKey(cl => cl.OwnerId)
+                .HasForeignKey(cl => cl.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // Връзка CreateListing -> PhoneModel

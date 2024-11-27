@@ -42,6 +42,6 @@ namespace SellingMobileApp.Data.Models.ViewModels
         
         public int CategoryId { get; set; }
 
-        public string OwnerId { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
     }
 }

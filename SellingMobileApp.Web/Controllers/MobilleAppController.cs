@@ -30,7 +30,13 @@ namespace SellingMobileApp.Web.Controllers
 
             string userId = GetUserId();
             await service.AddListingAsync(model, userId);
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(All));
+        }
+
+        public async Task<IActionResult> All()
+        {
+            var model = await service.GetAllListingsAsync();
+            return View(model);
         }
     }
 }

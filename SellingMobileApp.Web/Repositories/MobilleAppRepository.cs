@@ -20,11 +20,11 @@ namespace SellingMobileApp.Web.Repositories
         {
             string dateTimeString = $"{listing.ReleaseDate}";
 
-            if (!DateTime.TryParseExact(dateTimeString, "dd-MM-yyyy", CultureInfo.InvariantCulture,
+            /*if (DateTime.TryParseExact(dateTimeString, "dd-MM-yyyy", CultureInfo.InvariantCulture,
                 DateTimeStyles.None, out DateTime parseDateTime))
             {
                 throw new InvalidOperationException("Invalid date format.");
-            }
+            }*/
 
             var phoneModel = new PhoneModel
             {
@@ -45,7 +45,7 @@ namespace SellingMobileApp.Web.Repositories
                 Title = listing.Title,
                 Description = listing.Description,
                 ImageUrl = listing.ImageUrl,
-                OwnerId = listing.OwnerId,
+                UserId = listing.UserId,
                 ReleaseDate = DateTime.Now,
                 PhoneCharacteristicId = phoneModel.Id
             };
@@ -62,12 +62,24 @@ namespace SellingMobileApp.Web.Repositories
             throw new NotImplementedException();
         }
 
-        /*public Task<IEnumerable<AllListingsViewModel>> GetAllListingsByLocationAsync()
+        public async Task<IEnumerable<AllListingsViewModel>> GetAllListingsAsync()
         {
-            throw new NotImplementedException();
+            var listings = await context.CreateListings
+                .Include(l => l.PhoneCharacteristic)
+        .Select(l => new AllListingsViewModel
+        {
+            Id = l.Id,
+            Title = l.Title,
+            ImageUrl = l.ImageUrl,
+            Price = l.Price,
+            ManufactureYear = l.PhoneCharacteristic.ManufactureYear // Извличаме годината на производство от свързания PhoneModel
+        })
+        .ToListAsync();
+
+            return listings;
         }
 
-        public Task<DetailsViewModel?> GetListingDetailsByIdAsync(Guid id)
+        /*public Task<DetailsViewModel?> GetListingDetailsByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
