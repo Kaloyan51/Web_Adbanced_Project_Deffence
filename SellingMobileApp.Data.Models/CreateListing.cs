@@ -34,12 +34,8 @@ namespace SellingMobileApp.Data.Models
         public decimal Price { get; set; } //moje da dade problem
 
         [Comment ("Date of the listing publication")]
-        public DateTime ReleaseDate { get; set; }
+        public DateTime ReleaseDate { get; set; } = DateTime.Now;
 
-        /*public CreateListing()
-        {
-            ReleaseDate = DateTime.Now;
-        }*/
 
         [Required]
         public string OwnerId { get; set; } = string.Empty!;

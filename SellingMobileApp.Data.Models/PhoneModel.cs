@@ -26,8 +26,8 @@ namespace SellingMobileApp.Data.Models
 
         [Required]
         [Comment("Manufacture Year of the phone")]
-        [Range(AppConstants.ManufactureYearMinLength, AppConstants.ManufactureYearMaxLength, ErrorMessage = "Годината на производство трябва да бъде между 2000 и 2100 година")]
-        public int ManufactureYear { get; set; }
+        //  [Range(AppConstants.ManufactureYearMinLength, AppConstants.ManufactureYearMaxLength, ErrorMessage = "Годината на производство трябва да бъде между 2000 и 2100 година")]
+        public DateTime ManufactureYear { get; set; }
 
         [Required]
         [Comment("Storage capacity of the phone in GB")]
