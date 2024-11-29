@@ -45,6 +45,7 @@ namespace SellingMobileApp.Web.Repositories
             {
                 Title = listing.Title,
                 Description = listing.Description,
+                Price = listing.Price,
                 ImageUrl = listing.ImageUrl,
                 UserId = userId,
                 ReleaseDate = DateTime.Now,

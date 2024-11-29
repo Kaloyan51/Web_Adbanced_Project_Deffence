@@ -21,21 +21,24 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="ImageUrl">Снимка</label>
-        <input asp-for="ImageUrl" type="file" class="form-control" />
+        <label asp-for="ImageUrl" class="control-label">Снимка (URL)</label>
+        <input asp-for="ImageUrl" type="url" class="form-control" placeholder="Въведете URL адрес на изображението" />
         <span asp-validation-for="ImageUrl" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Price" class="control-label"></label>
-        <input asp-for="Price" class="form-control" type="number" step="0.01" />
+        <div class="input-group">
+            <span class="input-group-text">лв.</span>
+            <input asp-for="Price" class="form-control" type="number" step="0.01" placeholder="Въведете цена" />
+        </div>
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="ReleaseDate" class="control-label"></label>
         <input asp-for="ReleaseDate" class="form-control" type="text"
-               value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
+               value="@DateTime.Now.ToString("dd-MM-yyyy'г'")" readonly />
         <span asp-validation-for="ReleaseDate" class="text-danger"></span>
     </div>
 
@@ -56,7 +59,7 @@
     <div class="form-group">
         <label asp-for="PhoneModel.ManufactureYear" class="control-label">Година на производство</label>
         <input asp-for="PhoneModel.ManufactureYear" class="form-control" type="date"
-               value="@(Model.PhoneModel.ManufactureYear.ToString("yyyy-MM-dd") ?? "")" />
+               value="@(Model.PhoneModel.ManufactureYear.ToString("dd-MM-yyyy") ?? "")" />
         <span asp-validation-for="PhoneModel.ManufactureYear" class="text-danger"></span>
     </div>
 
@@ -81,7 +84,7 @@
         <span asp-validation-for="CategoryListing" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Добави обявата</button>
+    <button type="submit" class="btn btn-primary">Създай обява</button>
 
 
 </form>

@@ -20,7 +20,7 @@ namespace SellingMobileApp.Data.Models.ViewModels
         [StringLength(AppConstants.DescriptionMaxLength, MinimumLength = AppConstants.DescriptionMinLength, ErrorMessage = "Описанието трябва да бъде между 20 и 1000 символа")]
         public string Description { get; set; } = string.Empty;
 
-        [Display(Name = "Снимка")]
+        [Display(Name = "Добавете линк към снимка(незадължително)")]
         public string? ImageUrl { get; set; }
 
         [Required]

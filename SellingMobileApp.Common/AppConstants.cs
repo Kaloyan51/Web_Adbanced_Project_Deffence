@@ -3,10 +3,10 @@
     public class AppConstants
     {
         //CreatingListing
-        public const int TitleMinLength = 10;
-        public const int TitleMaxLength = 100;
-        public const int DescriptionMinLength = 20;
-        public const int DescriptionMaxLength = 1000;
+        public const int TitleMinLength = 5;
+        public const int TitleMaxLength = 40;
+        public const int DescriptionMinLength = 10;
+        public const int DescriptionMaxLength = 500;
         public const decimal PriceMinValue = 5.00m;
         public const decimal PriceMaxValue = 10000.00m;
 

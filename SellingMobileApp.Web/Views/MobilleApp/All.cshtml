@@ -4,35 +4,47 @@
     ViewData["Title"] = "Всички обяви";
 }
 
-<h2>Всички обяви</h2>
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
 
-<div class="row">
+<div class="text-center row">
     @foreach (var listing in Model)
     {
-        <div class="col-md-4">
-            <div class="card mb-4" style="width: 18rem;">
-                @if (!string.IsNullOrEmpty(listing.ImageUrl))
-                {
-                    <img src="@listing.ImageUrl" class="card-img-top" alt="Обява за @listing.Title">
-                }
-                else
-                {
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Обява за @listing.Title">
-                }
-                <div class="card-body">
-                    <h5 class="card-title">@listing.Title</h5>
-                    <p class="card-text">
-                        <strong>Цена:</strong> @listing.Price €<br />
-                        <strong>Година на производство:</strong> @listing.ManufactureYear
-                    </p>
-                    <div class="d-flex justify-content-between">
-                        <!-- Бутон за добавяне в любими -->
-                        <button class="btn btn-outline-primary" disabled>Добави в любими</button>
-                        <!-- Бутон за редактиране -->
-                        <button class="btn btn-outline-warning" disabled>Редактиране</button>
-                        <!-- Бутон за детайли -->
-                        <button class="btn btn-outline-info" disabled>Детайли</button>
+        <div class="card col-3 h-100" style="width: 20rem; ">
+            @if (!string.IsNullOrEmpty(listing.ImageUrl))
+            {
+                <img src="@listing.ImageUrl" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" alt="Снимка на @listing.Title">
+            }
+            else
+            {
+                <img src="https://via.placeholder.com/200x200" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" alt="Placeholder Image">
+            }
+            <div class="card-body" style="height: calc(100% - 150px); overflow: auto;">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="title-wrapper" style="height: 6em; overflow: hidden;">
+                            <h4 class="card-title mt-1">@listing.Title</h4>
+                        </div>
                     </div>
+                </div>
+                <p class="mb-0">
+                    <strong>Цена:</strong> @listing.Price лв.<br />
+                    <strong>Дата на производство:</strong> @listing.ManufactureYear.ToString("dd.MM.yyyy")
+                </p>
+            </div>
+
+            <div class="row gx-0">
+                <div class="col-12 px-1">
+                    <button class="btn btn-outline-secondary btn-sm mb-2 w-100" disabled>Добави в любими</button>
+                </div>
+            </div>
+
+            <div class="row gx-0">
+                <div class="col-6 px-1">
+                    <button class="btn btn-outline-warning btn-sm mb-2 w-100" disabled>Редактиране</button>
+                </div>
+                <div class="col-6 px-1">
+                    <button class="btn btn-outline-info btn-sm mb-2 w-100" disabled>Детайли</button>
                 </div>
             </div>
         </div>
@@ -40,5 +52,5 @@
 </div>
 
 @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 }

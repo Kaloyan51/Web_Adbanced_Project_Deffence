@@ -19,14 +19,15 @@ namespace SellingMobileApp.Data.Models
 
         [Required]
         [Comment ("Title of the listing")]
-        [MaxLength(AppConstants.TitleMaxLength, ErrorMessage = "Заглавието трябва да бъде между 20 и 100 символа")]
+        [MaxLength(AppConstants.TitleMaxLength, ErrorMessage = "Заглавието трябва да бъде между 5 и 40 символа")]
         public string Title { get; set; } = string.Empty;
 
         [Required]
         [Comment ("Description detailing the specific phone")]
-        [MaxLength(AppConstants.DescriptionMaxLength, ErrorMessage = "Описанието трябва да бъде между 20 и 1000 символа")]
+        [MaxLength(AppConstants.DescriptionMaxLength, ErrorMessage = "Описанието трябва да бъде между 10 и 500 символа")]
         public string Description { get; set; } = string.Empty;
 
+        //[Url(ErrorMessage = "Url адресът е невалиден")]
         public string? ImageUrl { get; set; }
 
         [Required]
