@@ -4,6 +4,7 @@ using SellingMobileApp.Data;
 using SellingMobileApp.Data.Models;
 using SellingMobileApp.Web.Repositories.Contracts;
 using SellingMobileApp.Web.Repositories;
+using System.Globalization;
 
 namespace SellingMobileApp.Web
 {
@@ -57,6 +58,9 @@ namespace SellingMobileApp.Web
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+
+            //CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("bg-BG");
+            //CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("bg-BG");
 
             app.Run();
         }

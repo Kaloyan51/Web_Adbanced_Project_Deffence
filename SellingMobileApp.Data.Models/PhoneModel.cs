@@ -27,6 +27,7 @@ namespace SellingMobileApp.Data.Models
         [Required]
         [Comment("Manufacture Year of the phone")]
         //  [Range(AppConstants.ManufactureYearMinLength, AppConstants.ManufactureYearMaxLength, ErrorMessage = "Годината на производство трябва да бъде между 2000 и 2100 година")]
+        
         public DateTime ManufactureYear { get; set; }
 
         [Required]
@@ -39,6 +40,6 @@ namespace SellingMobileApp.Data.Models
         [Range(AppConstants.RamCapacityMinLength, AppConstants.RamCapacityMaxLength, ErrorMessage = "RAM капацитетът трябва да бъде между 1 и 512 GB")]
         public int RamCapacity { get; set; }
 
-        
+        public ICollection<CreateListing> CreateListings { get; set; } = new HashSet<CreateListing>(); 
     }
 }

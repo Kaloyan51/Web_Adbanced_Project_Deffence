@@ -23,14 +23,14 @@ namespace SellingMobileApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(ListingViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
+            /*if (!ModelState.IsValid)
+            {   
                 return View(model);
-            }
+            }*/
 
             string userId = GetUserId();
             await service.AddListingAsync(model, userId);
-            return RedirectToAction(nameof(All));
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> All()

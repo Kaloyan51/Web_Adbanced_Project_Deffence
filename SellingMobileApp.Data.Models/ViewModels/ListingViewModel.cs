@@ -34,7 +34,7 @@ namespace SellingMobileApp.Data.Models.ViewModels
 
         public int PhoneCharacteristicId { get; set; }
 
-        public PhoneModelViewModel PhoneCharacteristic { get; set; } = new PhoneModelViewModel();
+        public PhoneModelViewModel PhoneModel { get; set; } = new PhoneModelViewModel();
 
         public CategoryListingViewModel CategoryListing { get; set; } = new CategoryListingViewModel();
 

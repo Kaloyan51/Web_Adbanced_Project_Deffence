@@ -13,8 +13,8 @@ namespace SellingMobileApp.Data.Models
     public class User : IdentityUser
     {
         [Key]
-        [Comment ("Id of the user")]
-        public string Id { get; set; }
+        [Comment("Id of the user")]
+        public override string Id { get; set; }
 
         [Required]
         [Comment ("Name of the user")]

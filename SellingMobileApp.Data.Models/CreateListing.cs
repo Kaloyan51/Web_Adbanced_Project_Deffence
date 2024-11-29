@@ -34,6 +34,7 @@ namespace SellingMobileApp.Data.Models
         public decimal Price { get; set; } //moje da dade problem
 
         [Comment ("Date of the listing publication")]
+        
         public DateTime ReleaseDate { get; set; } = DateTime.Now;
 
 
@@ -41,13 +42,13 @@ namespace SellingMobileApp.Data.Models
         public string UserId { get; set; } = string.Empty!;
 
         [ForeignKey(nameof(UserId))]
-        public virtual User User { get; set; } = null!;
+        public  User User { get; set; } = null!;
 
         [Required]
         public int PhoneCharacteristicId { get; set; }
 
         [ForeignKey(nameof(PhoneCharacteristicId))]
-        public  PhoneModel PhoneCharacteristic { get; set; } = null!;
+        public  PhoneModel PhoneModel { get; set; } = null!;
 
         public virtual ICollection<UserCreateListing> UsersCreateListings { get; set; } = new List<UserCreateListing>();
     }

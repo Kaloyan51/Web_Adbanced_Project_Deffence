@@ -38,8 +38,8 @@ namespace SellingMobileApp.Data
 
             // Връзка CreateListing -> PhoneModel
             builder.Entity<CreateListing>()
-                .HasOne(cl => cl.PhoneCharacteristic)
-                .WithMany() // Ако искате да имате обратно множество, добавете 'WithMany(p => p.CreateListings)'
+                .HasOne(cl => cl.PhoneModel)
+                .WithMany(p => p.CreateListings) // Ако искате да имате обратно множество, добавете 'WithMany(p => p.CreateListings)'
                 .HasForeignKey(cl => cl.PhoneCharacteristicId)
                 .OnDelete(DeleteBehavior.NoAction);
 

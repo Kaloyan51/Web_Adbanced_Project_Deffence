@@ -5,6 +5,7 @@ using SellingMobileApp.Data.Models.ViewModels;
 using SellingMobileApp.Web.Repositories;
 using SellingMobileApp.Web.Repositories.Contracts;
 using System.Globalization;
+using System.Transactions;
 
 namespace SellingMobileApp.Web.Repositories
 {
@@ -28,11 +29,11 @@ namespace SellingMobileApp.Web.Repositories
 
             var phoneModel = new PhoneModel
             {
-                Brand = listing.PhoneCharacteristic.Brand,
-                Model = listing.PhoneCharacteristic.Model,
-                ManufactureYear = listing.PhoneCharacteristic.ManufactureYear,
-                StorageCapacity = listing.PhoneCharacteristic.StorageCapacity,
-                RamCapacity = listing.PhoneCharacteristic.RamCapacity
+                Brand = listing.PhoneModel.Brand,
+                Model = listing.PhoneModel.Model,
+                ManufactureYear = listing.PhoneModel.ManufactureYear,
+                StorageCapacity = listing.PhoneModel.StorageCapacity,
+                RamCapacity = listing.PhoneModel.RamCapacity
             };
 
             // Добавете го в базата данни
@@ -53,6 +54,8 @@ namespace SellingMobileApp.Web.Repositories
             await context.CreateListings.AddAsync(listingData);
             await context.SaveChangesAsync();
 
+            
+
             //throw new NotImplementedException();
         }
 
@@ -65,14 +68,14 @@ namespace SellingMobileApp.Web.Repositories
         public async Task<IEnumerable<AllListingsViewModel>> GetAllListingsAsync()
         {
             var listings = await context.CreateListings
-                .Include(l => l.PhoneCharacteristic)
+                .Include(l => l.PhoneModel)
         .Select(l => new AllListingsViewModel
         {
             Id = l.Id,
             Title = l.Title,
             ImageUrl = l.ImageUrl,
             Price = l.Price,
-            ManufactureYear = l.PhoneCharacteristic.ManufactureYear // Извличаме годината на производство от свързания PhoneModel
+            ManufactureYear = l.PhoneModel.ManufactureYear // Извличаме годината на производство от свързания PhoneModel
         })
         .ToListAsync();
 

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Добавяне на нова обява";
+
 }
 
 <h2>Добавяне на нова обява</h2>
@@ -20,8 +21,8 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="ImageUrl" class="control-label"></label>
-        <input asp-for="ImageUrl" class="form-control" />
+        <label asp-for="ImageUrl">Снимка</label>
+        <input asp-for="ImageUrl" type="file" class="form-control" />
         <span asp-validation-for="ImageUrl" class="text-danger"></span>
     </div>
 
@@ -34,41 +35,41 @@
     <div class="form-group">
         <label asp-for="ReleaseDate" class="control-label"></label>
         <input asp-for="ReleaseDate" class="form-control" type="text"
-               value="@DateTime.Now.ToString("dd-MM-yyyy")" readonly />
+               value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
         <span asp-validation-for="ReleaseDate" class="text-danger"></span>
     </div>
 
     <h3>Телефонни характеристики</h3>
 
     <div class="form-group">
-        <label asp-for="PhoneCharacteristic.Brand" class="control-label">Марка</label>
-        <input asp-for="PhoneCharacteristic.Brand" class="form-control" />
-        <span asp-validation-for="PhoneCharacteristic.Brand" class="text-danger"></span>
+        <label asp-for="PhoneModel.Brand" class="control-label">Марка</label>
+        <input asp-for="PhoneModel.Brand" class="form-control" />
+        <span asp-validation-for="PhoneModel.Brand" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="PhoneCharacteristic.Model" class="control-label">Модел</label>
-        <input asp-for="PhoneCharacteristic.Model" class="form-control" />
-        <span asp-validation-for="PhoneCharacteristic.Model" class="text-danger"></span>
+        <label asp-for="PhoneModel.Model" class="control-label">Модел</label>
+        <input asp-for="PhoneModel.Model" class="form-control" />
+        <span asp-validation-for="PhoneModel.Model" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="PhoneCharacteristic.ManufactureYear" class="control-label">Година на производство</label>
-        <input asp-for="PhoneCharacteristic.ManufactureYear" class="form-control" type="date"
-               value="@(Model.PhoneCharacteristic.ManufactureYear.ToString("dd-MM-yyyy") ?? "")" />
-        <span asp-validation-for="PhoneCharacteristic.ManufactureYear" class="text-danger"></span>
+        <label asp-for="PhoneModel.ManufactureYear" class="control-label">Година на производство</label>
+        <input asp-for="PhoneModel.ManufactureYear" class="form-control" type="date"
+               value="@(Model.PhoneModel.ManufactureYear.ToString("yyyy-MM-dd") ?? "")" />
+        <span asp-validation-for="PhoneModel.ManufactureYear" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="PhoneCharacteristic.StorageCapacity" class="control-label">Вътрешна памет (GB)</label>
-        <input asp-for="PhoneCharacteristic.StorageCapacity" class="form-control" type="number" />
-        <span asp-validation-for="PhoneCharacteristic.StorageCapacity" class="text-danger"></span>
+        <label asp-for="PhoneModel.StorageCapacity" class="control-label">Вътрешна памет (GB)</label>
+        <input asp-for="PhoneModel.StorageCapacity" class="form-control" type="number" />
+        <span asp-validation-for="PhoneModel.StorageCapacity" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="PhoneCharacteristic.RamCapacity" class="control-label">RAM памет (GB)</label>
-        <input asp-for="PhoneCharacteristic.RamCapacity" class="form-control" type="number" />
-        <span asp-validation-for="PhoneCharacteristic.RamCapacity" class="text-danger"></span>
+        <label asp-for="PhoneModel.RamCapacity" class="control-label">RAM памет (GB)</label>
+        <input asp-for="PhoneModel.RamCapacity" class="form-control" type="number" />
+        <span asp-validation-for="PhoneModel.RamCapacity" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -82,7 +83,7 @@
 
     <button type="submit" class="btn btn-primary">Добави обявата</button>
 
-   
+
 </form>
 
 @section Scripts {
