@@ -24,7 +24,8 @@ namespace SellingMobileApp.Web.Controllers
         public async Task<IActionResult> Add(ListingViewModel model)
         {
             /*if (!ModelState.IsValid)
-            {   
+            {
+                model.CategoryListings = (await service.GetAddModelAsync()).CategoryListings;
                 return View(model);
             }*/
 
@@ -36,6 +37,18 @@ namespace SellingMobileApp.Web.Controllers
         public async Task<IActionResult> All()
         {
             var model = await service.GetAllListingsAsync();
+            return View(model);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var model = await service.GetListingDetailsAsync(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
             return View(model);
         }
     }

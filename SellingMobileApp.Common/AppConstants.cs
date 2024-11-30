@@ -24,7 +24,7 @@
         //PhoneModel
         public const int BrandMinLength = 3;
         public const int BrandMaxLength = 50;
-        public const int ModelMinLength = 3;
+        public const int ModelMinLength = 2;
         public const int ModelMaxLength = 50;
         public const int ManufactureYearMinLength = 2000;
         public const int ManufactureYearMaxLength = 2100;

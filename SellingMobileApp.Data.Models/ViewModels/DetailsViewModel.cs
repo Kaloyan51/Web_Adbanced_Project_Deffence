@@ -13,7 +13,7 @@ namespace SellingMobileApp.Data.Models.ViewModels
 
         public string Title { get; set; } = string.Empty;
 
-        public string UserName { get; set; } = string.Empty;
+        public string UserEmail { get; set; } = string.Empty;
 
         public string UserPhoneNumber { get; set; } = null!;
 
@@ -21,7 +21,7 @@ namespace SellingMobileApp.Data.Models.ViewModels
 
         public string Description { get; set; } = string.Empty;
 
-        public int ManufactureYear { get; set; }
+        
 
         public PhoneModelViewModel PhoneModel { get; set; } = new PhoneModelViewModel();
 

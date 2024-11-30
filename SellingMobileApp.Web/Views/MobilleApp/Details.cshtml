@@ -1,0 +1,43 @@
+﻿@model SellingMobileApp.Data.Models.ViewModels.DetailsViewModel
+
+<div class="container my-4">
+    <h1 class="text-center mb-4">@Model.Title</h1>
+
+    <div class="row g-3 align-items-start">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <img src="@Model.ImageUrl" alt="@Model.Title" class="card-img-top img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm p-3">
+                <h3 class="text-center mb-3">Детайли</h3>
+                <div class="mb-3">
+                    <p><strong>Цена:</strong> <span style="color: black;">@Model.Price лв.</span></p>
+                    <p><strong>Описание:</strong> @Model.Description</p>
+                    <p><strong>Категория:</strong> @Model.CategoryListing.Name</p>
+                    <p><strong>Имейл:</strong> <a href="mailto:@Model.UserEmail">@Model.UserEmail</a></p>
+                    <p><strong>Телефон:</strong> <span style="color: black;">@Model.UserPhoneNumber</span></p>
+                </div>
+                <h4 class="text-center mt-4">Характеристики</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Марка:</strong> @Model.PhoneModel.Brand</li>
+                    <li class="list-group-item"><strong>Модел:</strong> @Model.PhoneModel.Model</li>
+                    <li class="list-group-item"><strong>Година на производство:</strong> @Model.PhoneModel.ManufactureYear.ToString("dd.MM.yyyy'г.'")</li>
+                    <li class="list-group-item"><strong>Вътрешна памет:</strong> @Model.PhoneModel.StorageCapacity GB</li>
+                    <li class="list-group-item"><strong>RAM памет:</strong> @Model.PhoneModel.RamCapacity GB</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="@Url.Action("All", "MobilleApp")" class="btn btn-secondary btn-lg">
+            &larr; Назад към всички обяви
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

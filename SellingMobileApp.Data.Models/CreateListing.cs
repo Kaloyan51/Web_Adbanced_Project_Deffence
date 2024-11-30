@@ -51,6 +51,12 @@ namespace SellingMobileApp.Data.Models
         [ForeignKey(nameof(PhoneCharacteristicId))]
         public  PhoneModel PhoneModel { get; set; } = null!;
 
+        [Required(ErrorMessage = "Моля, изберете категория")]
+        public int CategoryId { get; set; }
+
+        [ForeignKey(nameof(CategoryId))]
+        public Category Category { get; set; } = null!;
+
         public virtual ICollection<UserCreateListing> UsersCreateListings { get; set; } = new List<UserCreateListing>();
     }
 }

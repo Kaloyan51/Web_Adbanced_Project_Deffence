@@ -5,6 +5,7 @@ using SellingMobileApp.Data.Models.ViewModels;
 using SellingMobileApp.Web.Repositories;
 using SellingMobileApp.Web.Repositories.Contracts;
 using System.Globalization;
+using System.Reflection;
 using System.Transactions;
 
 namespace SellingMobileApp.Web.Repositories
@@ -49,21 +50,29 @@ namespace SellingMobileApp.Web.Repositories
                 ImageUrl = listing.ImageUrl,
                 UserId = userId,
                 ReleaseDate = DateTime.Now,
-                PhoneCharacteristicId = phoneModel.Id
+                PhoneCharacteristicId = phoneModel.Id,
+                CategoryId = listing.CategoryId
             };
 
             await context.CreateListings.AddAsync(listingData);
             await context.SaveChangesAsync();
 
-            
-
-            //throw new NotImplementedException();
         }
 
         public async Task<ListingViewModel> GetAddModelAsync()
         {
-            return new ListingViewModel();
-            throw new NotImplementedException();
+            var categories = await context.Categories
+                .Select(c => new CategoryListingViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                })
+                .ToListAsync();
+
+            var model =  new ListingViewModel{
+                CategoryListings = categories
+            };
+            return model;
         }
 
         public async Task<IEnumerable<AllListingsViewModel>> GetAllListingsAsync()
@@ -83,12 +92,48 @@ namespace SellingMobileApp.Web.Repositories
             return listings;
         }
 
-        /*public Task<DetailsViewModel?> GetListingDetailsByIdAsync(Guid id)
+        /*public async Task<CreateListing> GetListingByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await context.CreateListings
+                .FirstOrDefault(l => l.Id == id);
+        }*/
+
+        public async Task<DetailsViewModel?> GetListingDetailsAsync(int id)
+        {
+            var listing = await context.CreateListings
+       .Include(l => l.PhoneModel)
+       .Include(l => l.Category)
+       .Include(l => l.User)
+       .FirstOrDefaultAsync(l => l.Id == id);
+
+
+            var detailsViewModel = new DetailsViewModel
+            {
+                ImageUrl = listing.ImageUrl,
+                Title = listing.Title,
+                UserEmail = listing.User.UserEmail,
+                UserPhoneNumber = listing.User.UserPhoneNumber,
+                Price = listing.Price,
+                Description = listing.Description,
+                PhoneModel = new PhoneModelViewModel
+                {
+                    Brand = listing.PhoneModel.Brand,
+                    Model = listing.PhoneModel.Model,
+                    ManufactureYear = listing.PhoneModel.ManufactureYear,
+                    StorageCapacity = listing.PhoneModel.StorageCapacity,
+                    RamCapacity = listing.PhoneModel.RamCapacity
+                },
+                CategoryListing = new CategoryListingViewModel
+                {
+                    Id = listing.Category.Id,
+                    Name = listing.Category.Name
+                }
+            };
+
+            return detailsViewModel;
         }
 
-        public Task<EditViewModel?> GetListingEditByIdAsync(Guid id)
+        /*public Task<EditViewModel?> GetListingEditByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }*/

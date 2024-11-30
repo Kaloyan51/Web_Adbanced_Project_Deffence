@@ -21,10 +21,6 @@ namespace SellingMobileApp.Data.Models
         [MaxLength (AppConstants.NameOfCategoryMaxLength, ErrorMessage = "Името на категорията трябва да бъде между 3 и 50 символа")]
         public string Name { get; set; } = null!;
 
-        [Comment ("More information for phone status")]
-        [MaxLength (AppConstants.DescriptionOfCategoryMaxLength, ErrorMessage = "Описанието трябва да бъде между 5 и 250 символа")]
-        public string? Description { get; set; }
-
         public virtual ICollection<CreateListing> Listings { get; set; } = new List<CreateListing>();
     }
 }

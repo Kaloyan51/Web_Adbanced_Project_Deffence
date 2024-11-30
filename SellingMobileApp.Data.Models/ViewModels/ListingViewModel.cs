@@ -36,14 +36,17 @@ namespace SellingMobileApp.Data.Models.ViewModels
 
         public PhoneModelViewModel PhoneModel { get; set; } = new PhoneModelViewModel();
 
-        public CategoryListingViewModel CategoryListing { get; set; } = new CategoryListingViewModel();
 
         public ReviewViewModel Reviews { get; set; } = new ReviewViewModel();
-        
+
         public int CategoryId { get; set; }
+
+        public virtual IEnumerable<CategoryListingViewModel>? CategoryListings { get; set; }
 
         public string UserId { get; set; } = string.Empty;
 
         public virtual IEnumerable<UserViewModel>? Users { get; set; }
+
+    
     }
 }

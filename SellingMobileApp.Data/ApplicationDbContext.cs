@@ -62,6 +62,11 @@ namespace SellingMobileApp.Data
                 .Property(c => c.Price)
                 .HasColumnType("decimal(18,2)");
 
+            builder.Entity<Category>()
+                .HasData(
+                new Category { Id = 1, Name = "Нов" },
+                new Category { Id = 2, Name = "Употребяван" });
+                
 
         }
 
