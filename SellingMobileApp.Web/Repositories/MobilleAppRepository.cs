@@ -85,7 +85,8 @@ namespace SellingMobileApp.Web.Repositories
             Title = l.Title,
             ImageUrl = l.ImageUrl,
             Price = l.Price,
-            ManufactureYear = l.PhoneModel.ManufactureYear // Извличаме годината на производство от свързания PhoneModel
+            ManufactureYear = l.PhoneModel.ManufactureYear, // Извличаме годината на производство от свързания PhoneModel
+            UserId = l.UserId
         })
         .ToListAsync();
 

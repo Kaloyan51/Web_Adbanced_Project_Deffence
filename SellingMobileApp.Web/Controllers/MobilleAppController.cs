@@ -36,7 +36,9 @@ namespace SellingMobileApp.Web.Controllers
 
         public async Task<IActionResult> All()
         {
+            string currentUserId = GetUserId();
             var model = await service.GetAllListingsAsync();
+            ViewData["CurrentUserId"] = currentUserId;
             return View(model);
         }
 

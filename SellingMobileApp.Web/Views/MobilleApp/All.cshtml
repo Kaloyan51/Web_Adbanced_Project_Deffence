@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Всички обяви";
+    var currentUserId = ViewData["CurrentUserId"]?.ToString();
 }
 
 <h2 class="text-center">@ViewData["Title"]</h2>
@@ -10,7 +11,8 @@
 <div class="text-center row">
     @foreach (var listing in Model)
     {
-        <div class="card col-3 h-100" style="width: 20rem; ">
+        <div class="card col-3 h-100" style="width: 20rem;">
+            <!-- Изображение -->
             @if (!string.IsNullOrEmpty(listing.ImageUrl))
             {
                 <img src="@listing.ImageUrl" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" alt="Снимка на @listing.Title">
@@ -19,33 +21,38 @@
             {
                 <img src="https://via.placeholder.com/200x200" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" alt="Placeholder Image">
             }
+
+            <!-- Тяло на картата -->
             <div class="card-body" style="height: calc(100% - 150px); overflow: auto;">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="title-wrapper" style="height: 6em; overflow: hidden;">
-                            <h4 class="card-title mt-1">@listing.Title</h4>
-                        </div>
-                    </div>
-                </div>
-                <p class="mb-0">
+                <h4 class="card-title mt-1">@listing.Title</h4>
+                <p>
                     <strong>Цена:</strong> @listing.Price лв.<br />
                     <strong>Дата на производство:</strong> @listing.ManufactureYear.ToString("dd.MM.yyyy")
                 </p>
             </div>
 
+            <!-- Бутони с if-else -->
             <div class="row gx-0">
-                <div class="col-12 px-1">
-                    <button class="btn btn-outline-secondary btn-sm mb-2 w-100" disabled>Добави в любими</button>
-                </div>
-            </div>
-
-            <div class="row gx-0">
-                <div class="col-6 px-1">
-                    <button class="btn btn-outline-warning btn-sm mb-2 w-100" disabled>Редактиране</button>
-                </div>
-                <div class="col-6 px-1">
-                    <a href="@Url.Action("Details", "MobilleApp", new { id = listing.Id })" class="btn btn-outline-info btn-sm mb-2 w-100">Детайли</a>
-                </div>
+                @if (currentUserId == listing.UserId)
+                {
+                    <!-- Собственикът вижда "Редактиране" и "Детайли" -->
+                    <div class="col-6 px-1">
+                        <button class="btn btn-warning btn-sm mb-2 w-100 fw-bold rounded">Редактиране</button>
+                    </div>
+                    <div class="col-6 px-1">
+                        <a href="@Url.Action("Details", "MobilleApp", new { id = listing.Id })" class="btn btn-primary btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
+                    </div>
+                }
+                else
+                {
+                    <!-- Другите потребители виждат "Добави в любими" и "Детайли" -->
+                    <div class="col-12 px-1">
+                        <button class="btn btn-outline-secondary btn-sm mb-2 w-100 fw-bold rounded" disabled>Добави в любими</button>
+                    </div>
+                    <div class="col-12 px-1">
+                        <a href="@Url.Action("Details", "MobilleApp", new { id = listing.Id })" class="btn btn-info btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
+                    </div>
+                }
             </div>
         </div>
     }
