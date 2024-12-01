@@ -2,10 +2,9 @@
 
 @{
     ViewData["Title"] = "Добавяне на нова обява";
-
 }
 
-<h2>Добавяне на нова обява</h2>
+<h2 class="text-center">@ViewData["Title"]</h2> 
 
 <form asp-action="Add" method="post">
     <div class="form-group">
@@ -84,8 +83,6 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Създай обява</button>
-
-
 </form>
 
 @section Scripts {

@@ -11,9 +11,12 @@ namespace SellingMobileApp.Web.Repositories.Contracts
 
         Task<IEnumerable<AllListingsViewModel>> GetAllListingsAsync();
 
-        //Task<CreateListing> GetListingByIdAsync(int id);
+        Task<CreateListing> GetListingByIdAsync(int id);
 
         Task<DetailsViewModel?> GetListingDetailsAsync(int id);
+
+        Task AddListingToMyFavouriteAsync(string userId, CreateListing createListing);
+        Task<IEnumerable<ListingAddToMyFavouriteViewModel>> AllFavouriteListingAsync(string userId);
 
         //Task<EditViewModel?> GetListingEditByIdAsync(Guid id);
 

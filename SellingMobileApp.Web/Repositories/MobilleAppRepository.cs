@@ -59,6 +59,46 @@ namespace SellingMobileApp.Web.Repositories
 
         }
 
+        public async Task AddListingToMyFavouriteAsync(string userId, CreateListing createListing)
+        {   
+            // Проверка дали обявата вече не е в любимите
+            var existingFavourite = await context.UsersCreateListings
+                .AnyAsync(ul => ul.UserId == userId && ul.ListingId == createListing.Id);
+
+            if (existingFavourite)
+            {
+                return;
+            }
+
+
+            var userListing = new UserCreateListing
+            {
+                UserId = userId,
+                ListingId = createListing.Id
+            };
+
+            await context.UsersCreateListings.AddAsync(userListing);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<ListingAddToMyFavouriteViewModel>> AllFavouriteListingAsync(string userId)
+        {
+            var favouriteListings = await context.UsersCreateListings
+       .Where(ul => ul.UserId == userId)
+       .Select(ul => new ListingAddToMyFavouriteViewModel
+       {
+           Id = ul.CreateListing.Id,
+           Title = ul.CreateListing.Title,
+           ImageUrl = ul.CreateListing.ImageUrl,
+           Price = ul.CreateListing.Price,
+           ManufactureYear = ul.CreateListing.PhoneModel.ManufactureYear,
+           UserId = ul.CreateListing.UserId,
+       })
+       .ToListAsync();
+
+            return favouriteListings;
+        }
+
         public async Task<ListingViewModel> GetAddModelAsync()
         {
             var categories = await context.Categories
@@ -93,11 +133,14 @@ namespace SellingMobileApp.Web.Repositories
             return listings;
         }
 
-        /*public async Task<CreateListing> GetListingByIdAsync(int id)
+        public async Task<CreateListing> GetListingByIdAsync(int id)
         {
-            return await context.CreateListings
-                .FirstOrDefault(l => l.Id == id);
-        }*/
+            var listing = await context.CreateListings
+       .Include(l => l.PhoneModel)   
+       .FirstOrDefaultAsync(l => l.Id == id);
+
+            return listing;
+        }
 
         public async Task<DetailsViewModel?> GetListingDetailsAsync(int id)
         {

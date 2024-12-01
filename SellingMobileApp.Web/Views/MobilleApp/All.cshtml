@@ -42,12 +42,22 @@
                     <div class="col-6 px-1">
                         <a href="@Url.Action("Details", "MobilleApp", new { id = listing.Id })" class="btn btn-primary btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
                     </div>
+                    <div class="col-12 px-1">
+                        <!-- Добавете бутон за "Добави в любими" с действие към метода за добавяне в любими -->
+                        <form action="@Url.Action("AddToMyFavourite", "MobilleApp")" method="post" class="mb-2">
+                            <input type="hidden" name="id" value="@listing.Id" />
+                            <button type="submit" class="btn btn-outline-success btn-sm w-100 fw-bold rounded">Добави в любими</button>
+                        </form>
+                    </div>
                 }
                 else
                 {
-                    <!-- Другите потребители виждат "Добави в любими" и "Детайли" -->
                     <div class="col-12 px-1">
-                        <button class="btn btn-outline-secondary btn-sm mb-2 w-100 fw-bold rounded" disabled>Добави в любими</button>
+                        <!-- Добавете бутон за "Добави в любими" с действие към метода за добавяне в любими -->
+                        <form action="@Url.Action("AddToMyFavourite", "MobilleApp")" method="post" class="mb-2">
+                            <input type="hidden" name="id" value="@listing.Id" />
+                            <button type="submit" class="btn btn-outline-success btn-sm w-100 fw-bold rounded">Добави в любими</button>
+                        </form>
                     </div>
                     <div class="col-12 px-1">
                         <a href="@Url.Action("Details", "MobilleApp", new { id = listing.Id })" class="btn btn-info btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>

@@ -10,6 +10,16 @@ namespace SellingMobileApp.Data.Models.ViewModels
     {
         public int Id { get; set; }
 
-        public List<AllListingsViewModel> FavouriteListings { get; set; } = new List<AllListingsViewModel>();
+        public string Title { get; set; } = string.Empty;
+
+        public string? ImageUrl { get; set; }
+
+        public decimal Price { get; set; }
+
+        public DateTime ManufactureYear { get; set; }
+
+        public string UserId { get; set; } = string.Empty;
+
+        //public string UserName { get; set; } = string.Empty;
     }
 }
