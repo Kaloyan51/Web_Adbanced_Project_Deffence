@@ -16,6 +16,8 @@ namespace SellingMobileApp.Web.Repositories.Contracts
         Task<DetailsViewModel?> GetListingDetailsAsync(int id);
 
         Task AddListingToMyFavouriteAsync(string userId, CreateListing createListing);
+
+        Task StrikeOutMyFavouriteAsync(string userId, CreateListing createListing);
         Task<IEnumerable<ListingAddToMyFavouriteViewModel>> AllFavouriteListingAsync(string userId);
 
         //Task<EditViewModel?> GetListingEditByIdAsync(Guid id);

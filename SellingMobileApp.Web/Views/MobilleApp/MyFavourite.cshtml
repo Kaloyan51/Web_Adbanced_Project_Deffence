@@ -21,7 +21,6 @@
                 <img src="https://via.placeholder.com/200x200" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" alt="Placeholder Image">
             }
 
-
             <div class="card-body" style="height: calc(100% - 150px); overflow: auto;">
                 <h4 class="card-title mt-1">@listing.Title</h4>
                 <p>
@@ -31,9 +30,15 @@
             </div>
 
             <div class="row gx-0">
+                <!-- Формуляр за премахване от любими -->
                 <div class="col-12 px-1 mb-2">
-                    <button class="btn btn-danger btn-sm w-100 fw-bold rounded" disabled>Премахни от любими</button>
+                    <form asp-action="RemoveFromMyFavourite" method="post">
+                        <input type="hidden" name="id" value="@listing.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm w-100 fw-bold rounded">Премахни от любими</button>
+                    </form>
                 </div>
+
+                <!-- Бутон за детайли -->
                 <div class="col-12 px-1">
                     <a href="@Url.Action("Details", "MobilleApp", new { id = listing.Id })" class="btn btn-info btn-sm w-100 fw-bold rounded">Детайли</a>
                 </div>

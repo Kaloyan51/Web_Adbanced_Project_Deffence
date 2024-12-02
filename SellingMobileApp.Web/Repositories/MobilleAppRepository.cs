@@ -61,7 +61,6 @@ namespace SellingMobileApp.Web.Repositories
 
         public async Task AddListingToMyFavouriteAsync(string userId, CreateListing createListing)
         {   
-            // Проверка дали обявата вече не е в любимите
             var existingFavourite = await context.UsersCreateListings
                 .AnyAsync(ul => ul.UserId == userId && ul.ListingId == createListing.Id);
 
@@ -125,7 +124,7 @@ namespace SellingMobileApp.Web.Repositories
             Title = l.Title,
             ImageUrl = l.ImageUrl,
             Price = l.Price,
-            ManufactureYear = l.PhoneModel.ManufactureYear, // Извличаме годината на производство от свързания PhoneModel
+            ManufactureYear = l.PhoneModel.ManufactureYear, 
             UserId = l.UserId
         })
         .ToListAsync();
@@ -176,6 +175,22 @@ namespace SellingMobileApp.Web.Repositories
 
             return detailsViewModel;
         }
+
+        public async Task StrikeOutMyFavouriteAsync(string userId, CreateListing createListing)
+        {
+            var favourite = await context.UsersCreateListings
+       .FirstOrDefaultAsync(ul => ul.UserId == userId && ul.ListingId == createListing.Id);
+
+            if (favourite == null)
+            {
+                return;
+            }
+
+            context.UsersCreateListings.Remove(favourite);
+
+            await context.SaveChangesAsync();
+        }
+    
 
         /*public Task<EditViewModel?> GetListingEditByIdAsync(Guid id)
         {

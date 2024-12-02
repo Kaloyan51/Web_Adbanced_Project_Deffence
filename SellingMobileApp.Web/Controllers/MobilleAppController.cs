@@ -85,5 +85,24 @@ namespace SellingMobileApp.Web.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromMyFavourite(int id)
+        {
+            string userId = GetUserId();
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var createListing = await service.GetListingByIdAsync(id);
+            if (createListing != null)
+            {
+                await service.StrikeOutMyFavouriteAsync(userId, createListing);
+                TempData["Message"] = "Обявата беше премахната от любимите ви!";
+            }
+
+            return RedirectToAction("MyFavourite", "MobilleApp");
+        }
     }
 }
