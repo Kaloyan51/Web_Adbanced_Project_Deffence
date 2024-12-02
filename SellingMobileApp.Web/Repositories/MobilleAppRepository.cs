@@ -190,7 +190,12 @@ namespace SellingMobileApp.Web.Repositories
 
             await context.SaveChangesAsync();
         }
-    
+
+        public Task DeleteGameAsync(CreateListing createListing)
+        {
+            context.CreateListings.Remove(createListing);
+            return context.SaveChangesAsync();
+        }
 
         /*public Task<EditViewModel?> GetListingEditByIdAsync(Guid id)
         {

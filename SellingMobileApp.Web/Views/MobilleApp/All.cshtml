@@ -11,62 +11,65 @@
 <div class="text-center row">
     @foreach (var listing in Model)
     {
-        <div class="card col-3 h-100" style="width: 20rem;">
-            <!-- Изображение -->
+            <div class="card col-3 h-100" style="width: 20rem;">
+                <!-- Изображение -->
             @if (!string.IsNullOrEmpty(listing.ImageUrl))
             {
-                <img src="@listing.ImageUrl" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" alt="Снимка на @listing.Title">
+                        <img src="@listing.ImageUrl" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" alt="Снимка на @listing.Title">
             }
             else
             {
-                <img src="https://via.placeholder.com/200x200" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" alt="Placeholder Image">
+                        <img src="https://via.placeholder.com/200x200" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" alt="Placeholder Image">
             }
 
-            <!-- Тяло на картата -->
-            <div class="card-body" style="height: calc(100% - 150px); overflow: auto;">
-                <h4 class="card-title mt-1">@listing.Title</h4>
-                <p>
-                    <strong>Цена:</strong> @listing.Price лв.<br />
-                    <strong>Дата на производство:</strong> @listing.ManufactureYear.ToString("dd.MM.yyyy")
-                </p>
-            </div>
+                <!-- Тяло на картата -->
+                <div class="card-body" style="height: calc(100% - 150px); overflow: auto;">
+                    <h4 class="card-title mt-1">@listing.Title</h4>
+                    <p>
+                        <strong>Цена:</strong> @listing.Price лв.<br />
+                        <strong>Дата на производство:</strong> @listing.ManufactureYear.ToString("dd.MM.yyyy")
+                    </p>
+                </div>
 
-            <!-- Бутони с if-else -->
-            <div class="row gx-0">
+                <!-- Бутони с if-else -->
+                <div class="row gx-0">
                 @if (currentUserId == listing.UserId)
                 {
-                    <!-- Собственикът вижда "Редактиране" и "Детайли" -->
-                    <div class="col-6 px-1">
-                        <button class="btn btn-warning btn-sm mb-2 w-100 fw-bold rounded">Редактиране</button>
-                    </div>
-                    <div class="col-6 px-1">
-                        <a href="@Url.Action("Details", "MobilleApp", new { id = listing.Id })" class="btn btn-primary btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
-                    </div>
-                    <div class="col-12 px-1">
-                        <!-- Добавете бутон за "Добави в любими" с действие към метода за добавяне в любими -->
-                        <form action="@Url.Action("AddToMyFavourite", "MobilleApp")" method="post" class="mb-2">
-                            <input type="hidden" name="id" value="@listing.Id" />
-                            <button type="submit" class="btn btn-outline-success btn-sm w-100 fw-bold rounded">Добави в любими</button>
-                        </form>
-                    </div>
+                            <!-- Собственикът вижда "Редактиране", "Детайли" и "Изтриване" -->
+                            <div class="col-6 px-1">
+                                <button class="btn btn-warning btn-sm mb-2 w-100 fw-bold rounded">Редактиране</button>
+                            </div>
+                            <div class="col-6 px-1">
+                                <a href="@Url.Action("Details", "MobilleApp", new { id = listing.Id })" class="btn btn-primary btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
+                            </div>
+                            <div class="col-12 px-1">
+                                <form action="@Url.Action("AddToMyFavourite", "MobilleApp")" method="post" class="mb-2">
+                                    <input type="hidden" name="id" value="@listing.Id" />
+                                    <button type="submit" class="btn btn-outline-success btn-sm w-100 fw-bold rounded">Добави в любими</button>
+                                </form>
+                            </div>
+                            <!-- Добавяме бутон за изтриване -->
+                            <div class="col-12 px-1">
+                                <a href="@Url.Action("Delete", "MobilleApp", new { id = listing.Id })" class="btn btn-danger btn-sm w-100 fw-bold rounded">Изтриване</a>
+                            </div>
                 }
                 else
                 {
-                    <div class="col-12 px-1">
-                        <!-- Добавете бутон за "Добави в любими" с действие към метода за добавяне в любими -->
-                        <form action="@Url.Action("AddToMyFavourite", "MobilleApp")" method="post" class="mb-2">
-                            <input type="hidden" name="id" value="@listing.Id" />
-                            <button type="submit" class="btn btn-outline-success btn-sm w-100 fw-bold rounded">Добави в любими</button>
-                        </form>
-                    </div>
-                    <div class="col-12 px-1">
-                        <a href="@Url.Action("Details", "MobilleApp", new { id = listing.Id })" class="btn btn-info btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
-                    </div>
+                            <div class="col-12 px-1">
+                                <form action="@Url.Action("AddToMyFavourite", "MobilleApp")" method="post" class="mb-2">
+                                    <input type="hidden" name="id" value="@listing.Id" />
+                                    <button type="submit" class="btn btn-outline-success btn-sm w-100 fw-bold rounded">Добави в любими</button>
+                                </form>
+                            </div>
+                            <div class="col-12 px-1">
+                                <a href="@Url.Action("Details", "MobilleApp", new { id = listing.Id })" class="btn btn-info btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
+                            </div>
                 }
+                </div>
             </div>
-        </div>
     }
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

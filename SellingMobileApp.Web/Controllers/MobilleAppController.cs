@@ -44,6 +44,9 @@ namespace SellingMobileApp.Web.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
+            string currentUserId = GetUserId();
+            ViewData["CurrentUserId"] = currentUserId;
+
             var model = await service.GetListingDetailsAsync(id);
 
             if (model == null)
@@ -104,5 +107,56 @@ namespace SellingMobileApp.Web.Controllers
 
             return RedirectToAction("MyFavourite", "MobilleApp");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var listing = await service.GetListingByIdAsync(id);
+
+            if (listing == null)
+            {
+                return BadRequest();
+            }
+
+            string userId = GetUserId();
+
+            if (listing.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            DeleteListingViewModel model = new DeleteListingViewModel
+            {
+                Id = listing.Id,
+                Title = listing.Title
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id, DeleteListingViewModel model)
+        {
+            var listing = await service.GetListingByIdAsync(id);
+
+            if (listing == null)
+            {
+                return BadRequest();
+            }
+
+            string userId = GetUserId();
+
+            if (listing.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            await service.DeleteGameAsync(listing);
+
+            TempData["Message"] = "Обявата беше успешно изтрита!";
+            return RedirectToAction("All", "MobilleApp");
+        }
+
     }
 }

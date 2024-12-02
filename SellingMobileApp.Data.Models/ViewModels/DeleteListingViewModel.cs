@@ -12,6 +12,6 @@ namespace SellingMobileApp.Data.Models.ViewModels
 
         public string Title { get; set; } = null!;
 
-        public int OwnerNameUser { get; set; }
+        public string Publisher { get; set; } = null!;
     }
 }

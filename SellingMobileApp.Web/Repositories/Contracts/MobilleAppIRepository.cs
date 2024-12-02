@@ -20,6 +20,8 @@ namespace SellingMobileApp.Web.Repositories.Contracts
         Task StrikeOutMyFavouriteAsync(string userId, CreateListing createListing);
         Task<IEnumerable<ListingAddToMyFavouriteViewModel>> AllFavouriteListingAsync(string userId);
 
+        Task DeleteGameAsync(CreateListing createListing);  
+
         //Task<EditViewModel?> GetListingEditByIdAsync(Guid id);
 
 
