@@ -4,7 +4,7 @@
     {
         //CreatingListing
         public const int TitleMinLength = 5;
-        public const int TitleMaxLength = 40;
+        public const int TitleMaxLength = 30;
         public const int DescriptionMinLength = 10;
         public const int DescriptionMaxLength = 500;
         public const decimal PriceMinValue = 5.00m;

@@ -4,85 +4,87 @@
     ViewData["Title"] = "Добавяне на нова обява";
 }
 
-<h2 class="text-center">@ViewData["Title"]</h2> 
+<h2 class="text-center text-dark" style="font-family: 'Arial', sans-serif; font-weight: bold;">@ViewData["Title"]</h2>
 
-<form asp-action="Add" method="post">
-    <div class="form-group">
-        <label asp-for="Title" class="control-label"></label>
-        <input asp-for="Title" class="form-control" />
+<form asp-action="Add" method="post" class="p-5 rounded shadow-lg" style="background-color: #f1f8ff;">
+    <div class="form-group mb-4">
+        <label asp-for="Title" class="form-label text-primary fw-bold">Заглавие на обявата</label>
+        <input asp-for="Title" class="form-control shadow-sm border-primary" placeholder="Въведете заглавие на обявата" />
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Description" class="control-label"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
+    <div class="form-group mb-4">
+        <label asp-for="Description" class="form-label text-primary fw-bold">Описание</label>
+        <textarea asp-for="Description" class="form-control shadow-sm border-primary" placeholder="Опишете продукта в детайли"></textarea>
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="ImageUrl" class="control-label">Снимка (URL)</label>
-        <input asp-for="ImageUrl" type="url" class="form-control" placeholder="Въведете URL адрес на изображението" />
+    <div class="form-group mb-4">
+        <label asp-for="ImageUrl" class="form-label text-primary fw-bold">Снимка (URL)</label>
+        <input asp-for="ImageUrl" type="url" class="form-control shadow-sm border-primary" placeholder="Въведете URL адрес на изображението(незадължително)" />
         <span asp-validation-for="ImageUrl" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Price" class="control-label"></label>
+    <div class="form-group mb-4">
+        <label asp-for="Price" class="form-label text-primary fw-bold">Цена</label>
         <div class="input-group">
-            <span class="input-group-text">лв.</span>
-            <input asp-for="Price" class="form-control" type="number" step="0.01" placeholder="Въведете цена" />
+            <span class="input-group-text bg-primary text-white">лв.</span>
+            <input asp-for="Price" class="form-control shadow-sm border-primary" type="number" step="0.01" placeholder="Въведете цена" />
         </div>
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="ReleaseDate" class="control-label"></label>
-        <input asp-for="ReleaseDate" class="form-control" type="text"
-               value="@DateTime.Now.ToString("dd-MM-yyyy'г'")" readonly />
+    <div class="form-group mb-4">
+        <label asp-for="ReleaseDate" class="form-label text-primary fw-bold">Дата на публикуване</label>
+        <input asp-for="ReleaseDate" class="form-control shadow-sm border-primary" type="text" value="@DateTime.Now.ToString("dd-MM-yyyy'г'")" readonly />
         <span asp-validation-for="ReleaseDate" class="text-danger"></span>
     </div>
 
-    <h3>Телефонни характеристики</h3>
+    <h3 class="my-4 text-secondary">Телефонни характеристики</h3>
 
-    <div class="form-group">
-        <label asp-for="PhoneModel.Brand" class="control-label">Марка</label>
-        <input asp-for="PhoneModel.Brand" class="form-control" />
+    <div class="form-group mb-4">
+        <label asp-for="PhoneModel.Brand" class="form-label text-primary fw-bold">Марка</label>
+        <input asp-for="PhoneModel.Brand" class="form-control shadow-sm border-primary" placeholder="Въведете марката на телефона" />
         <span asp-validation-for="PhoneModel.Brand" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="PhoneModel.Model" class="control-label">Модел</label>
-        <input asp-for="PhoneModel.Model" class="form-control" />
+    <div class="form-group mb-4">
+        <label asp-for="PhoneModel.Model" class="form-label text-primary fw-bold">Модел</label>
+        <input asp-for="PhoneModel.Model" class="form-control shadow-sm border-primary" placeholder="Въведете модела на телефона" />
         <span asp-validation-for="PhoneModel.Model" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="PhoneModel.ManufactureYear" class="control-label">Година на производство</label>
-        <input asp-for="PhoneModel.ManufactureYear" class="form-control" type="date"
-               value="@(Model.PhoneModel.ManufactureYear.ToString("dd-MM-yyyy") ?? "")" />
+    <div class="form-group mb-4">
+        <label asp-for="PhoneModel.ManufactureYear" class="form-label text-primary fw-bold">Дата на производство</label>
+        <input asp-for="PhoneModel.ManufactureYear" class="form-control shadow-sm border-primary" type="date" value="@(Model.PhoneModel.ManufactureYear.ToString("dd-MM-yyyy") ?? "")" />
+
         <span asp-validation-for="PhoneModel.ManufactureYear" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="PhoneModel.StorageCapacity" class="control-label">Вътрешна памет (GB)</label>
-        <input asp-for="PhoneModel.StorageCapacity" class="form-control" type="number" />
+    <div class="form-group mb-4">
+        <label asp-for="PhoneModel.StorageCapacity" class="form-label text-primary fw-bold">Вътрешна памет (GB)</label>
+        <input asp-for="PhoneModel.StorageCapacity" class="form-control shadow-sm border-primary" type="number" />
         <span asp-validation-for="PhoneModel.StorageCapacity" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="PhoneModel.RamCapacity" class="control-label">RAM памет (GB)</label>
-        <input asp-for="PhoneModel.RamCapacity" class="form-control" type="number" />
+    <div class="form-group mb-4">
+        <label asp-for="PhoneModel.RamCapacity" class="form-label text-primary fw-bold">RAM памет (GB)</label>
+        <input asp-for="PhoneModel.RamCapacity" class="form-control shadow-sm border-primary" type="number" />
         <span asp-validation-for="PhoneModel.RamCapacity" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="CategoryId" class="control-label"></label>
-        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(Model.CategoryListings, "Id", "Name"))">
+    <div class="form-group mb-4">
+        <label asp-for="CategoryId" class="form-label text-primary fw-bold">Категория</label>
+        <select asp-for="CategoryId" class="form-control shadow-sm border-primary" asp-items="@(new SelectList(Model.CategoryListings, "Id", "Name"))">
             <option value="">Изберете категория</option>
         </select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Създай обява</button>
+    <div class="d-flex justify-content-between mt-4">
+        <button type="submit" class="btn btn-success px-4 py-2" style="background-color: #28a745; border-color: #28a745;">Създай обява</button>
+        <a href="@Url.Action("All", "MobilleApp")" class="btn btn-outline-secondary px-4 py-2">Отказ</a>
+    </div>
 </form>
 
 @section Scripts {
