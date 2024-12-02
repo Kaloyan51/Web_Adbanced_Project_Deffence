@@ -158,5 +158,42 @@ namespace SellingMobileApp.Web.Controllers
             return RedirectToAction("All", "MobilleApp");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await service.GetListingEditModelAsync(id);
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            return View(model); 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, EditViewModel model)
+        {
+            /*if (!ModelState.IsValid)
+            {
+                
+                model.CategoryListings = (await service.GetListingEditModelAsync(id)).CategoryListings;
+                return View(model);
+            }*/
+
+            var createListing = await service.GetListingByIdAsync(id);
+            if (createListing == null)
+            {
+                return NotFound(); 
+            }
+
+            await service.EditListingAsync(model, createListing);
+
+            TempData["Message"] = "Обявата беше успешно редактирана!";
+            return RedirectToAction("All", "MobilleApp");
+        }
+
+
     }
 }

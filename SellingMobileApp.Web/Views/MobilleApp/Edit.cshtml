@@ -1,0 +1,90 @@
+﻿@model SellingMobileApp.Data.Models.ViewModels.EditViewModel
+
+@{
+    ViewData["Title"] = "Редактиране на обява";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+
+<form asp-action="Edit" method="post">
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageUrl" class="control-label">Снимка (URL)</label>
+        <input asp-for="ImageUrl" type="url" class="form-control" placeholder="Въведете URL адрес на изображението" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <div class="input-group">
+            <span class="input-group-text">лв.</span>
+            <input asp-for="Price" class="form-control" type="number" step="0.01" placeholder="Въведете цена" />
+        </div>
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReleaseDate" class="control-label"></label>
+        <input asp-for="ReleaseDate" class="form-control" type="text" value="@Model.ReleaseDate.ToString("dd-MM-yyyy")" readonly />
+        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+    </div>
+
+    <h3>Телефонни характеристики</h3>
+
+    <div class="form-group">
+        <label asp-for="PhoneModel.Brand" class="control-label">Марка</label>
+        <input asp-for="PhoneModel.Brand" class="form-control" />
+        <span asp-validation-for="PhoneModel.Brand" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneModel.Model" class="control-label">Модел</label>
+        <input asp-for="PhoneModel.Model" class="form-control" />
+        <span asp-validation-for="PhoneModel.Model" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneModel.ManufactureYear" class="control-label">Дата на производство</label>
+        <input asp-for="PhoneModel.ManufactureYear" class="form-control" type="date" 
+               value="@(Model.PhoneModel.ManufactureYear.ToString("dd.MM.yyyy'г.'") ?? "")" />
+        <span asp-validation-for="PhoneModel.ManufactureYear" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneModel.StorageCapacity" class="control-label">Вътрешна памет (GB)</label>
+        <input asp-for="PhoneModel.StorageCapacity" class="form-control" type="number" />
+        <span asp-validation-for="PhoneModel.StorageCapacity" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneModel.RamCapacity" class="control-label">RAM памет (GB)</label>
+        <input asp-for="PhoneModel.RamCapacity" class="form-control" type="number" />
+        <span asp-validation-for="PhoneModel.RamCapacity" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId" class="control-label"></label>
+        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(Model.CategoryListings, "Id", "Name"))">
+            <option value="">Изберете категория</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Запази промени</button>
+    <a href="@Url.Action("All", "MobilleApp")" class="btn btn-secondary">Връщане</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

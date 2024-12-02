@@ -22,8 +22,9 @@ namespace SellingMobileApp.Web.Repositories.Contracts
 
         Task DeleteGameAsync(CreateListing createListing);  
 
-        //Task<EditViewModel?> GetListingEditByIdAsync(Guid id);
+        Task<EditViewModel> GetListingEditModelAsync(int id);
 
+        Task EditListingAsync(EditViewModel editListing, CreateListing createListing);
 
     }
 }
