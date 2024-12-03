@@ -37,7 +37,6 @@ namespace SellingMobileApp.Web.Repositories
                 RamCapacity = listing.PhoneModel.RamCapacity
             };
 
-            // Добавете го в базата данни
             await context.PhoneModels.AddAsync(phoneModel);
             await context.SaveChangesAsync();
 
@@ -147,7 +146,13 @@ namespace SellingMobileApp.Web.Repositories
        .Include(l => l.PhoneModel)
        .Include(l => l.Category)
        .Include(l => l.User)
+       .Include(l => l.Reviews)
        .FirstOrDefaultAsync(l => l.Id == id);
+
+            if (listing == null)
+            {
+                return null;
+            }
 
 
             var detailsViewModel = new DetailsViewModel
@@ -170,7 +175,15 @@ namespace SellingMobileApp.Web.Repositories
                 {
                     Id = listing.Category.Id,
                     Name = listing.Category.Name
-                }
+                },
+                Reviews = listing.Reviews.Select(r => new ReviewViewModel
+                {
+                    Id=r.Id,
+                    UserId = r.UserId,
+                    UserName = r.UserName,
+                    Rating = r.Rating,
+                    Comment = r.Comment
+                }).ToList()
             };
 
             return detailsViewModel;
@@ -200,15 +213,14 @@ namespace SellingMobileApp.Web.Repositories
         public async Task<EditViewModel> GetListingEditModelAsync(int id)
         {
             var listing = await context.CreateListings
-         .Include(l => l.PhoneModel) // Зареждаме информацията за телефона
-         .FirstOrDefaultAsync(l => l.Id == id); // Извличаме съществуващата обява по id
+         .Include(l => l.PhoneModel) 
+         .FirstOrDefaultAsync(l => l.Id == id); 
 
             if (listing == null)
             {
-                return null; // Ако не е намерена обява с това id, връщаме null
+                return null; 
             }
 
-            // Подготвяме модел за редактиране с данните от обявата
             var model = new EditViewModel
             {
                 Title = listing.Title,
@@ -216,7 +228,7 @@ namespace SellingMobileApp.Web.Repositories
                 Price = listing.Price,
                 ImageUrl = listing.ImageUrl,
                 ReleaseDate = DateTime.Now,
-                CategoryId = listing.CategoryId, // ID на категорията
+                CategoryId = listing.CategoryId, 
                 PhoneModel = new PhoneModelViewModel
                 {
                     Brand = listing.PhoneModel.Brand,
@@ -231,42 +243,77 @@ namespace SellingMobileApp.Web.Repositories
                         Id = c.Id,
                         Name = c.Name
                     })
-                    .ToListAsync() // Вземаме всички категории за падащото меню
+                    .ToListAsync() 
             };
 
-            return model; // Връщаме подготвения модел за редактиране
+            return model; 
         }
 
         public async Task EditListingAsync(EditViewModel editListing, CreateListing createListing)
         {
-            // Проверяваме дали обявата съществува в базата данни
+
             var listing = await context.CreateListings
-                .Include(l => l.PhoneModel) // Зареждаме информацията за телефона
-                .FirstOrDefaultAsync(l => l.Id == createListing.Id); // Търсим обявата по id
+                .Include(l => l.PhoneModel) 
+                .FirstOrDefaultAsync(l => l.Id == createListing.Id); 
 
             if (listing == null)
             {
-                throw new InvalidOperationException("Listing not found."); // Ако не я намерим, хвърляме грешка
+                throw new InvalidOperationException("Listing not found."); 
             }
 
-            // Актуализираме стойностите на обявата
             listing.Title = editListing.Title;
             listing.Description = editListing.Description;
             listing.Price = editListing.Price;
             listing.ImageUrl = editListing.ImageUrl;
             listing.CategoryId = editListing.CategoryId;
 
-            // Няма нужда да променяме ReleaseDate, защото то е фиксирано към текущата дата
-
-            // Актуализираме информацията за телефона
             listing.PhoneModel.Brand = editListing.PhoneModel.Brand;
             listing.PhoneModel.Model = editListing.PhoneModel.Model;
             listing.PhoneModel.ManufactureYear = editListing.PhoneModel.ManufactureYear;
             listing.PhoneModel.StorageCapacity = editListing.PhoneModel.StorageCapacity;
             listing.PhoneModel.RamCapacity = editListing.PhoneModel.RamCapacity;
 
-            // Записваме промените в базата данни
             await context.SaveChangesAsync();
+        }
+
+        public async Task AddReviewAsync(ReviewViewModel reviewModel)
+        {
+            var review = new Review
+            {
+                UserId = reviewModel.UserId,
+                ListingId = reviewModel.ListingId,
+                Rating = reviewModel.Rating,
+                Comment = reviewModel.Comment,
+                UserName = reviewModel.UserName
+            };
+
+            await context.Reviews.AddAsync(review);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<ReviewViewModel>> GetReviewsByListingIdAsync(int listingId)
+        {
+           /* return await context.CreateListings
+                .Where(r => r.Cre == listingId)
+                .Select(r => new ReviewViewModel
+                {
+                    Id = r.Id,
+                    UserId = r.UserId,
+                    UserName = r.UserName,
+                    ListingId = r.ListingId,
+                    Rating = r.Rating,
+                    Comment = r.Comment
+                })
+                .ToListAsync();*/
+
+            var listing = await context.CreateListings
+         .FirstOrDefaultAsync(l => l.Id == listingId);
+        }
+
+        public async Task<User?> GetUserByIdAsync(string userId)
+        {
+            return context.Users
+                .FirstOrDefault(u => u.Id == userId);
         }
     }
 }

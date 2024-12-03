@@ -26,5 +26,7 @@ namespace SellingMobileApp.Data.Models.ViewModels
         public PhoneModelViewModel PhoneModel { get; set; } = new PhoneModelViewModel();
 
         public CategoryListingViewModel CategoryListing { get; set; } = new CategoryListingViewModel();
+
+        public IEnumerable<ReviewViewModel> Reviews { get; set; } = new List<ReviewViewModel>();
     }
 }

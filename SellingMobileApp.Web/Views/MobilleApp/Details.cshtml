@@ -38,9 +38,62 @@
         <a href="@Url.Action("All", "MobilleApp")" class="btn btn-secondary btn-lg me-2">
             &larr; Назад към всички обяви
         </a>
-
-
     </div>
+
+    <div class="mt-5">
+        <h3>Отзиви</h3>
+        <hr />
+        <div>
+            @if (Model.Reviews.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <li class="list-group-item">
+                            <strong>@review.UserName</strong>
+                            <span class="text-muted">(Рейтинг: @review.Rating)</span>
+                            <p>@review.Comment</p>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>Все още няма отзиви за тази обява.</p>
+            }
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(currentUserId))
+    {
+        <div class="mt-4">
+            <h4>Добавете отзив</h4>
+            <form asp-action="AddReview" asp-route-listingId=" @Model.CategoryListing.Id" method="post">
+                <!--<input type="hidden" name="listingId" value="@Model.CategoryListing.Id" />-->
+                <div class="mb-3">
+                    <label for="Rating" class="form-label">Рейтинг (1-5):</label>
+                    <select id="Rating" name="reviewModel.Rating" class="form-select" required>
+                        <option value="" disabled selected>Изберете...</option>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="Comment" class="form-label">Коментар:</label>
+                    <textarea id="Comment" name="reviewModel.Comment" class="form-control" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Добавете отзив</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning mt-4">
+            <p>За да оставите отзив, трябва да сте <a href="@Url.Action("Login", "Account")">вписан</a>.</p>
+        </div>
+    }
 </div>
 
 @section Scripts {

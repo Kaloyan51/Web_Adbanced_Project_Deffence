@@ -58,5 +58,7 @@ namespace SellingMobileApp.Data.Models
         public Category Category { get; set; } = null!;
 
         public virtual ICollection<UserCreateListing> UsersCreateListings { get; set; } = new List<UserCreateListing>();
+
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

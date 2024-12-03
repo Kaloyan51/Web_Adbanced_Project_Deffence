@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SellingMobileApp.Data;
 
@@ -11,9 +12,11 @@ using SellingMobileApp.Data;
 namespace SellingMobileApp.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241203130019_EditReviewModel")]
+    partial class EditReviewModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,7 +179,7 @@ namespace SellingMobileApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -241,7 +244,7 @@ namespace SellingMobileApp.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CreateListings", (string)null);
+                    b.ToTable("CreateListings");
                 });
 
             modelBuilder.Entity("SellingMobileApp.Data.Models.PhoneModel", b =>
@@ -278,7 +281,7 @@ namespace SellingMobileApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PhoneModels", (string)null);
+                    b.ToTable("PhoneModels");
                 });
 
             modelBuilder.Entity("SellingMobileApp.Data.Models.Review", b =>
@@ -294,9 +297,6 @@ namespace SellingMobileApp.Web.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)")
                         .HasComment("Comment of current listing");
-
-                    b.Property<int?>("CreateListingId")
-                        .HasColumnType("int");
 
                     b.Property<int>("ListingId")
                         .HasColumnType("int");
@@ -315,13 +315,11 @@ namespace SellingMobileApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreateListingId");
-
                     b.HasIndex("ListingId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("SellingMobileApp.Data.Models.User", b =>
@@ -420,7 +418,7 @@ namespace SellingMobileApp.Web.Migrations
 
                     b.HasIndex("ListingId");
 
-                    b.ToTable("UsersCreateListings", (string)null);
+                    b.ToTable("UsersCreateListings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -503,10 +501,6 @@ namespace SellingMobileApp.Web.Migrations
 
             modelBuilder.Entity("SellingMobileApp.Data.Models.Review", b =>
                 {
-                    b.HasOne("SellingMobileApp.Data.Models.CreateListing", null)
-                        .WithMany("Reviews")
-                        .HasForeignKey("CreateListingId");
-
                     b.HasOne("SellingMobileApp.Data.Models.CreateListing", "CreateListing")
                         .WithMany()
                         .HasForeignKey("ListingId")
@@ -550,8 +544,6 @@ namespace SellingMobileApp.Web.Migrations
 
             modelBuilder.Entity("SellingMobileApp.Data.Models.CreateListing", b =>
                 {
-                    b.Navigation("Reviews");
-
                     b.Navigation("UsersCreateListings");
                 });
 

@@ -17,20 +17,26 @@ namespace SellingMobileApp.Data.Models
         public int Id { get; set; }
 
         [Required]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = string.Empty!;
 
         [ForeignKey(nameof(UserId))]
-        public virtual User User { get; set; }
+        public User User { get; set; } = null!;
 
         [Required]
         public int ListingId { get; set; }
 
         [ForeignKey(nameof(ListingId))]
-        public virtual CreateListing CreateListing { get; set; }
+        public CreateListing CreateListing { get; set; } = null!;
 
-        [Range (AppConstants.ReviewMinLength, AppConstants.ReviewMaxength)]
+        [Range (AppConstants.ReviewRatingMinLength, AppConstants.ReviewRatingMaxLength)]
         [Comment ("Rating of current listing")]
         public int Rating { get; set; }
+
+        [MaxLength (AppConstants.ReviewCommentMaxLenght)]
+        [Comment ("Comment of current listing")]
+        public string? Comment { get; set; } = string.Empty!;
+
+        [Required]
         public string UserName { get; set; } = null!;
     }
 }

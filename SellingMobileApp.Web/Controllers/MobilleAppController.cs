@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SellingMobileApp.Data.Models;
 using SellingMobileApp.Data.Models.ViewModels;
 using SellingMobileApp.Web.Repositories.Contracts;
 
@@ -53,6 +54,8 @@ namespace SellingMobileApp.Web.Controllers
             {
                 return NotFound();
             }
+
+            model.Reviews = await service.GetReviewsByListingIdAsync(id);
 
             return View(model);
         }
@@ -194,6 +197,40 @@ namespace SellingMobileApp.Web.Controllers
             return RedirectToAction("All", "MobilleApp");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddReview(int listingId, ReviewViewModel reviewModel)
+        {
+            /*if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Моля, попълнете правилно формата за добавяне на отзив.";
+                return RedirectToAction("Details");
+            }*/
+
+            var listing = await service.GetListingByIdAsync(listingId);
+            if (listing == null)
+            {
+                TempData["Error"] = "Обявата не съществува.";
+                return RedirectToAction("All", "MobilleApp"); 
+            }
+
+            string userId = GetUserId();
+            var currentUser = await service.GetUserByIdAsync(userId);
+            if (currentUser == null)
+            {
+                TempData["Error"] = "Потребителят не е намерен.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            reviewModel.UserId = userId;
+            reviewModel.UserName = currentUser.Name;
+            reviewModel.ListingId = listingId;
+
+            await service.AddReviewAsync(reviewModel);
+
+            TempData["Message"] = "Отзивът беше успешно добавен!";
+            return RedirectToAction("Details", new { id = listingId });
+        }
 
     }
 }

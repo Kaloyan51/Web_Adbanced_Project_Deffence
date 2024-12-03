@@ -42,7 +42,8 @@
         public const int DescriptionOfCategoryMaxLength = 250;
 
         //Review 
-        public const int ReviewMinLength = 1;
-        public const int ReviewMaxength = 6;
+        public const int ReviewRatingMinLength = 1;
+        public const int ReviewRatingMaxLength = 5;
+        public const int ReviewCommentMaxLenght = 200;
     }
 }
