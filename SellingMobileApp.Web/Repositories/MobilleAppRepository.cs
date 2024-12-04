@@ -293,8 +293,8 @@ namespace SellingMobileApp.Web.Repositories
 
         public async Task<IEnumerable<ReviewViewModel>> GetReviewsByListingIdAsync(int listingId)
         {
-           /* return await context.CreateListings
-                .Where(r => r.Cre == listingId)
+            return await context.Reviews
+                .Where(r => r.ListingId == listingId)
                 .Select(r => new ReviewViewModel
                 {
                     Id = r.Id,
@@ -304,10 +304,8 @@ namespace SellingMobileApp.Web.Repositories
                     Rating = r.Rating,
                     Comment = r.Comment
                 })
-                .ToListAsync();*/
+                .ToListAsync();
 
-            var listing = await context.CreateListings
-         .FirstOrDefaultAsync(l => l.Id == listingId);
         }
 
         public async Task<User?> GetUserByIdAsync(string userId)

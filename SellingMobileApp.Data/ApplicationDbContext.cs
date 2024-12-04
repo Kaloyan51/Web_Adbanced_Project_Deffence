@@ -17,7 +17,12 @@ namespace SellingMobileApp.Data
         {
             base.OnModelCreating(builder);
 
-            
+            builder.Entity<CreateListing>()
+        .HasMany(cl => cl.Reviews)
+        .WithOne(r => r.CreateListing)
+        .HasForeignKey(r => r.ListingId)
+        .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<User>().ToTable("Users");
 
             builder.Entity<User>().ToTable("Users").Property(u => u.Name).IsRequired();

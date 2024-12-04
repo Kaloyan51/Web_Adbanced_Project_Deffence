@@ -68,11 +68,11 @@
     {
         <div class="mt-4">
             <h4>Добавете отзив</h4>
-            <form asp-action="AddReview" asp-route-listingId=" @Model.CategoryListing.Id" method="post">
-                <!--<input type="hidden" name="listingId" value="@Model.CategoryListing.Id" />-->
+            <form asp-action="AddReview" asp-route-listingId="@ViewData["ListingId"]" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="mb-3">
                     <label for="Rating" class="form-label">Рейтинг (1-5):</label>
-                    <select id="Rating" name="reviewModel.Rating" class="form-select" required>
+                    <select id="Rating" name="Rating" class="form-select" required>
                         <option value="" disabled selected>Изберете...</option>
                         @for (int i = 1; i <= 5; i++)
                         {
@@ -82,10 +82,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="Comment" class="form-label">Коментар:</label>
-                    <textarea id="Comment" name="reviewModel.Comment" class="form-control" rows="3" required></textarea>
+                    <textarea id="Comment" name="Comment" class="form-control" rows="3" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Добавете отзив</button>
             </form>
+
         </div>
     }
     else

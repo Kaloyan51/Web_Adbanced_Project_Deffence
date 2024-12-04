@@ -57,6 +57,8 @@ namespace SellingMobileApp.Web.Controllers
 
             model.Reviews = await service.GetReviewsByListingIdAsync(id);
 
+            ViewData["ListingId"] = id;
+
             return View(model);
         }
 
@@ -201,11 +203,6 @@ namespace SellingMobileApp.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReview(int listingId, ReviewViewModel reviewModel)
         {
-            /*if (!ModelState.IsValid)
-            {
-                TempData["Error"] = "Моля, попълнете правилно формата за добавяне на отзив.";
-                return RedirectToAction("Details");
-            }*/
 
             var listing = await service.GetListingByIdAsync(listingId);
             if (listing == null)
@@ -229,7 +226,7 @@ namespace SellingMobileApp.Web.Controllers
             await service.AddReviewAsync(reviewModel);
 
             TempData["Message"] = "Отзивът беше успешно добавен!";
-            return RedirectToAction("Details", new { id = listingId });
+            return RedirectToAction("All", "MobilleApp");
         }
 
     }
