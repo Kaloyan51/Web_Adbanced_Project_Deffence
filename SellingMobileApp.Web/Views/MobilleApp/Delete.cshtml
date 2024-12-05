@@ -16,10 +16,10 @@
     </div>
 
     <div class="text-center mt-4">
-        <form asp-action="Delete" asp-controller="MobilleApp" method="post">
+        <form asp-action="Delete" asp-controller="ManageListings" method="post">
             <input type="hidden" name="id" value="@Model.Id" />
             <button type="submit" class="btn btn-danger btn-lg me-2">Изтриване</button>
-            <a asp-action="All" asp-controller="MobilleApp" class="btn btn-secondary btn-lg">Отказ</a>
+            <a asp-action="All" asp-controller="Listings" class="btn btn-secondary btn-lg">Отказ</a>
         </form>
     </div>
 </div>

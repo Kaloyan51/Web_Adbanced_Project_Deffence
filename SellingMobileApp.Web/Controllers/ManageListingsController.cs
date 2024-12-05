@@ -1,0 +1,108 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using SellingMobileApp.Data.Models.ViewModels;
+using SellingMobileApp.Web.Repositories.Contracts;
+
+namespace SellingMobileApp.Web.Controllers
+{
+    public class ManageListingsController : BaseController
+    {
+        private readonly MobilleAppIRepository service;
+
+        public ManageListingsController(MobilleAppIRepository mobileService)
+        {
+            service = mobileService;
+        }
+
+        [HttpGet]
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var listing = await service.GetListingByIdAsync(id);
+
+            if (listing == null)
+            {
+                return BadRequest();
+            }
+
+            string userId = GetUserId();
+
+            if (listing.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            DeleteListingViewModel model = new DeleteListingViewModel
+            {
+                Id = listing.Id,
+                Title = listing.Title
+            };
+
+            //return View(model);
+            return View("~/Views/MobilleApp/Delete.cshtml", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> Delete(int id, DeleteListingViewModel model)
+        {
+            var listing = await service.GetListingByIdAsync(id);
+
+            if (listing == null)
+            {
+                return BadRequest();
+            }
+
+            string userId = GetUserId();
+
+            if (listing.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            await service.DeleteGameAsync(listing);
+
+            TempData["Message"] = "Обявата беше успешно изтрита!";
+            return RedirectToAction("All", "MobilleApp");
+        }
+
+        [HttpGet]
+        [Route("Edit/{id}")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await service.GetListingEditModelAsync(id);
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            //return View(model);
+            return View("~/Views/MobilleApp/Edit.cshtml", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Edit/{id}")]
+        public async Task<IActionResult> Edit(int id, EditViewModel model)
+        {
+            /*if (!ModelState.IsValid)
+            {
+                
+                model.CategoryListings = (await service.GetListingEditModelAsync(id)).CategoryListings;
+                return View(model);
+            }*/
+
+            var createListing = await service.GetListingByIdAsync(id);
+            if (createListing == null)
+            {
+                return NotFound();
+            }
+
+            await service.EditListingAsync(model, createListing);
+
+            TempData["Message"] = "Обявата беше успешно редактирана!";
+            return RedirectToAction("All", "MobilleApp");
+        }
+    }
+}

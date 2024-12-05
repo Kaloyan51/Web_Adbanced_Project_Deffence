@@ -37,10 +37,10 @@
                 {
                     <!-- Собственикът вижда "Редактиране", "Детайли" и "Изтриване" -->
                     <div class="col-6 px-1">
-                        <a href="@Url.Action("Edit", "MobilleApp", new { id = listing.Id })" class="btn btn-warning btn-sm mb-2 w-100 fw-bold rounded">Редактиране</a>
+                        <a href="@Url.Action("Edit", "ManageListings", new { id = listing.Id })" class="btn btn-warning btn-sm mb-2 w-100 fw-bold rounded">Редактиране</a>
                     </div>
                     <div class="col-6 px-1">
-                        <a href="@Url.Action("Details", "MobilleApp", new { id = listing.Id })" class="btn btn-primary btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
+                        <a href="@Url.Action("Details", "Listings", new { id = listing.Id })" class="btn btn-primary btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
                     </div>
                     <div class="col-12 px-1">
                         <form action="@Url.Action("AddToMyFavourite", "MobilleApp")" method="post" class="mb-2">
@@ -50,7 +50,7 @@
                     </div>
                     <!-- Добавяме бутон за изтриване -->
                     <div class="col-12 px-1">
-                        <a href="@Url.Action("Delete", "MobilleApp", new { id = listing.Id })" class="btn btn-danger btn-sm w-100 fw-bold rounded">Изтриване</a>
+                        <a href="@Url.Action("Delete", "ManageListings", new { id = listing.Id })" class="btn btn-danger btn-sm w-100 fw-bold rounded">Изтриване</a>
                     </div>
                 }
                 else
@@ -62,7 +62,7 @@
                         </form>
                     </div>
                     <div class="col-12 px-1">
-                        <a href="@Url.Action("Details", "MobilleApp", new { id = listing.Id })" class="btn btn-info btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
+                        <a href="@Url.Action("Details", "Listings", new { id = listing.Id })" class="btn btn-info btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
                     </div>
                 }
             </div>
