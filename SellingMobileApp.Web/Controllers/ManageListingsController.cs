@@ -37,7 +37,6 @@ namespace SellingMobileApp.Web.Controllers
                 Title = listing.Title
             };
 
-            //return View(model);
             return View("~/Views/MobilleApp/Delete.cshtml", model);
         }
 
@@ -77,7 +76,6 @@ namespace SellingMobileApp.Web.Controllers
                 return BadRequest();
             }
 
-            //return View(model);
             return View("~/Views/MobilleApp/Edit.cshtml", model);
         }
 

@@ -30,39 +30,33 @@ namespace SellingMobileApp.Data
             builder.Entity<UserCreateListing>()
                 .HasKey(uc => new { uc.UserId, uc.ListingId });
 
-            // Задаване на прост ключ за CreateListing
             builder.Entity<CreateListing>()
-                .HasKey(cl => cl.Id); // Слагаме основен ключ за CreateListing
+                .HasKey(cl => cl.Id);
 
-            // Връзка CreateListing -> User
             builder.Entity<CreateListing>()
                 .HasOne(cl => cl.User)
                 .WithMany(u => u.Listings)
                 .HasForeignKey(cl => cl.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Връзка CreateListing -> PhoneModel
             builder.Entity<CreateListing>()
                 .HasOne(cl => cl.PhoneModel)
-                .WithMany(p => p.CreateListings) // Ако искате да имате обратно множество, добавете 'WithMany(p => p.CreateListings)'
+                .WithMany(p => p.CreateListings) 
                 .HasForeignKey(cl => cl.PhoneCharacteristicId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Връзка Review -> User
             builder.Entity<Review>()
                 .HasOne(r => r.User)
                 .WithMany()
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Връзка Review -> CreateListing
             builder.Entity<Review>()
                 .HasOne(r => r.CreateListing)
-                .WithMany() // Може да добавите обратно множество, ако искате да имате рецензии за конкретни обяви
+                .WithMany()
                 .HasForeignKey(r => r.ListingId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Настройка на типа на Price в CreateListing
             builder.Entity<CreateListing>()
                 .Property(c => c.Price)
                 .HasColumnType("decimal(18,2)");

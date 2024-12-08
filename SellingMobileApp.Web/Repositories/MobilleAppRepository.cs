@@ -22,12 +22,6 @@ namespace SellingMobileApp.Web.Repositories
         {
             string dateTimeString = $"{listing.ReleaseDate}";
 
-            /*if (DateTime.TryParseExact(dateTimeString, "dd-MM-yyyy", CultureInfo.InvariantCulture,
-                DateTimeStyles.None, out DateTime parseDateTime))
-            {
-                throw new InvalidOperationException("Invalid date format.");
-            }*/
-
             var phoneModel = new PhoneModel
             {
                 Brand = listing.PhoneModel.Brand,

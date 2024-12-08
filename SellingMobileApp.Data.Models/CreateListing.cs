@@ -27,12 +27,12 @@ namespace SellingMobileApp.Data.Models
         [MaxLength(AppConstants.DescriptionMaxLength, ErrorMessage = "Описанието трябва да бъде между 10 и 500 символа")]
         public string Description { get; set; } = string.Empty;
 
-        //[Url(ErrorMessage = "Url адресът е невалиден")]
+        [Url(ErrorMessage = "Url адресът е невалиден")]
         public string? ImageUrl { get; set; }
 
         [Required]
         [Comment ("Price of the phone")]
-        public decimal Price { get; set; } //moje da dade problem
+        public decimal Price { get; set; }
 
         [Comment ("Date of the listing publication")]
         

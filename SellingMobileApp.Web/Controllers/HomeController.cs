@@ -8,27 +8,13 @@ namespace SellingMobileApp.Web.Controllers
     public class HomeController : BaseController
     {
         [AllowAnonymous]
-        /*private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }*/
-
-        /* public HomeController()
-         {
-
-         }*/
 
         public IActionResult Index()
         {
             ViewData["Title"] = "Home Page";
             ViewData["Message"] = "Welcome to selling phones app!";
 
-            /*if (User?.Identity?.IsAuthenticated ?? false)
-            {
-                return RedirectToAction("All", "Game");
-            }*/
+            
 
             return View();
         }

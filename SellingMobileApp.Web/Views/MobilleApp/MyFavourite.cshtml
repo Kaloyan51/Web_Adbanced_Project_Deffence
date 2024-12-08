@@ -11,7 +11,6 @@
     @foreach (var listing in Model)
     {
         <div class="card col-3 h-100" style="width: 20rem;">
-            <!-- Изображение -->
             @if (!string.IsNullOrEmpty(listing.ImageUrl))
             {
                 <img src="@listing.ImageUrl" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" alt="Снимка на @listing.Title">
@@ -30,7 +29,6 @@
             </div>
 
             <div class="row gx-0">
-                <!-- Формуляр за премахване от любими -->
                 <div class="col-12 px-1 mb-2">
                     <form asp-action="RemoveFromMyFavourite" method="post">
                         <input type="hidden" name="id" value="@listing.Id" />
@@ -38,7 +36,6 @@
                     </form>
                 </div>
 
-                <!-- Бутон за детайли -->
                 <div class="col-12 px-1">
                     <a href="@Url.Action("Details", "Listings", new { id = listing.Id })" class="btn btn-info btn-sm w-100 fw-bold rounded">Детайли</a>
                 </div>

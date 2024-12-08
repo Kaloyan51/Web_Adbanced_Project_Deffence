@@ -24,9 +24,7 @@ namespace SellingMobileApp.Data.Models.ViewModels
         public string Model { get; set; } = string.Empty;
 
         [Required]
-        [Display(Name = "Година на производство")]
-        //[Range(AppConstants.ManufactureYearMinLength, AppConstants.ManufactureYearMaxLength, ErrorMessage = "Годината на производство трябва да бъде между 2000 и 2100.")]
-        
+        [Display(Name = "Година на производство")]        
         public DateTime ManufactureYear { get; set; }
 
         [Required]
