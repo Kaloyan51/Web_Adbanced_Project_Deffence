@@ -307,5 +307,26 @@ namespace SellingMobileApp.Web.Repositories
             return context.Users
                 .FirstOrDefault(u => u.Id == userId);
         }
+
+        public async Task<IEnumerable<AllListingsViewModel>> SearchByBrandAsync(string brand)
+        {
+            var normalizedBrand = brand.ToLower();
+            var results = await context.CreateListings
+                 .Include(l => l.PhoneModel)
+                .Where(c => c.PhoneModel.Brand.ToLower().Contains(normalizedBrand))
+                .Select(c => new AllListingsViewModel
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    Price = c.Price,
+                    ImageUrl = c.ImageUrl,
+                    ManufactureYear = c.PhoneModel.ManufactureYear,
+                    UserId = c.UserId,
+                })
+                .ToListAsync();
+
+            return results;
+        }
+
     }
 }

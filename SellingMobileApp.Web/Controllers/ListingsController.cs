@@ -2,6 +2,7 @@
 using SellingMobileApp.Web.Repositories.Contracts;
 using SellingMobileApp.Data.Models;
 using SellingMobileApp.Data.Models.ViewModels;
+using NuGet.Protocol.Core.Types;
 
 namespace SellingMobileApp.Web.Controllers
 {
@@ -40,6 +41,40 @@ namespace SellingMobileApp.Web.Controllers
             ViewData["ListingId"] = id;
 
             return View("~/Views/MobilleApp/Details.cshtml", model);
+        }
+
+        [HttpGet]
+        [Route("Search")]
+        public async Task<IActionResult> Search(string brand)
+        {
+            if (string.IsNullOrWhiteSpace(brand))
+            {
+                TempData["Error"] = "Моля, въведете марка за търсене.";
+                return RedirectToAction("All");
+            }
+
+            var searchResults = await service.SearchByBrandAsync(brand);
+
+            if (!searchResults.Any())
+            {
+                TempData["Error"] = "Няма намерени обяви за въведената марка.";
+                return RedirectToAction("All");
+            }
+
+            ViewData["SearchQuery"] = brand;
+            return View("~/Views/MobilleApp/All.cshtml", searchResults);
+        }
+
+        [Route("AboutUs")]
+        public IActionResult AboutUs()
+        {
+            return View("~/Views/MobilleApp/AboutUs.cshtml");
+        }
+
+        [Route("Contacts")]
+        public IActionResult Contact()
+        {
+            return View("~/Views/MobilleApp/Contacts.cshtml");
         }
     }
 }

@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellingMobileApp.Data.Model
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SellingMobileApp.Common", "SellingMobileApp.Common\SellingMobileApp.Common.csproj", "{52BF5752-4ADB-4F9A-A321-7BFFF747A35D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobilleApp.Tests", "MobilleApp.Tests\MobilleApp.Tests.csproj", "{928E9995-17FD-4E97-B4B0-97384F3137A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobilleApp.Tests", "MobilleApp.Tests\MobilleApp.Tests.csproj", "{928E9995-17FD-4E97-B4B0-97384F3137A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

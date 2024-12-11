@@ -15,7 +15,8 @@
             <div class="container-fluid">
                 <a class="navbar-brand logo" asp-area="" asp-controller="Home" asp-action="Index">
                     <i class="bi bi-phone-fill"></i> SellingMobileApp
-                </a>                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -24,15 +25,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Welcome</a>
                         </li>
+
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Listings" asp-action="All">Browse Listings</a>
                             </li>
-                        }
 
-                        @if (User.Identity.IsAuthenticated)
-                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="MobilleApp" asp-action="Add">Post Listing</a>
                             </li>
@@ -43,6 +42,17 @@
                             </li>
                         }
                     </ul>
+
+                    <!-- Линковете за "About Us" и "Contact" ще са тук, вдясно от останалите бутони -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="@Url.Action("AboutUs", "Listings")">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="@Url.Action("Contact", "Listings")">Contact</a>
+                        </li>
+                    </ul>
+
                     <partial name="_LoginPartial" />
                 </div>
             </div>

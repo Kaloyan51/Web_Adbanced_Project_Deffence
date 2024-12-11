@@ -5,8 +5,22 @@
     var currentUserId = ViewData["CurrentUserId"]?.ToString();
 }
 
-<h2 class="text-center">@ViewData["Title"]</h2>
+<h2 class="text-center text-dark" style="font-family: 'Arial', sans-serif; font-weight: bold;">@ViewData["Title"]</h2>
 <hr />
+
+<div class="row mb-4">
+    <div class="col-md-8">
+    </div>
+    <div class="col-md-4 text-end">
+        <form method="get" asp-controller="Listings" asp-action="Search">
+            <div class="input-group">
+                <input type="text" name="brand" class="form-control" placeholder="Търсене по марка..."
+                       value="@ViewData["SearchQuery"]" />
+                <button type="submit" class="btn btn-primary">Търсене</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <div class="text-center row">
     @foreach (var listing in Model)
