@@ -47,10 +47,10 @@ namespace SellingMobileApp.Web.Controllers
         {
             var listing = await service.GetListingByIdAsync(id);
 
-            if (listing == null)
+            /*if (listing == null)
             {
                 return BadRequest();
-            }
+            }*/
 
             string userId = GetUserId();
 
@@ -62,7 +62,7 @@ namespace SellingMobileApp.Web.Controllers
             await service.DeleteGameAsync(listing);
 
             TempData["Message"] = "Обявата беше успешно изтрита!";
-            return RedirectToAction("All", "MobilleApp");
+            return View("~/Views/MobilleApp/All.cshtml", model);
         }
 
         [HttpGet]
@@ -76,6 +76,7 @@ namespace SellingMobileApp.Web.Controllers
                 return BadRequest();
             }
 
+
             return View("~/Views/MobilleApp/Edit.cshtml", model);
         }
 
@@ -84,12 +85,12 @@ namespace SellingMobileApp.Web.Controllers
         [Route("Edit/{id}")]
         public async Task<IActionResult> Edit(int id, EditViewModel model)
         {
-            /*if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 
                 model.CategoryListings = (await service.GetListingEditModelAsync(id)).CategoryListings;
-                return View(model);
-            }*/
+                return View("~/Views/MobilleApp/Edit.cshtml", model);
+            }
 
             var createListing = await service.GetListingByIdAsync(id);
             if (createListing == null)
@@ -100,7 +101,7 @@ namespace SellingMobileApp.Web.Controllers
             await service.EditListingAsync(model, createListing);
 
             TempData["Message"] = "Обявата беше успешно редактирана!";
-            return RedirectToAction("All", "MobilleApp");
+            return RedirectToAction("All", "Listings");
         }
     }
 }

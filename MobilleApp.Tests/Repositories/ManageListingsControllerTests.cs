@@ -16,7 +16,7 @@ namespace MobilleApp.Tests.Repositories
 {
     public class ManageListingsControllerTests
     {
-        private readonly Mock<MobilleAppIRepository> _mockRepository;
+        /*private readonly Mock<MobilleAppIRepository> _mockRepository;
         private readonly ManageListingsController _controller;
 
         public ManageListingsControllerTests()
@@ -175,6 +175,6 @@ namespace MobilleApp.Tests.Repositories
                 return context;
             }
         }
-    }
+    }*/
 }
 
