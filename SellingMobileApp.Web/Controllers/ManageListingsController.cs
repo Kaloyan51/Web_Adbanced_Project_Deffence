@@ -75,7 +75,7 @@ namespace SellingMobileApp.Web.Controllers
             {
                 return BadRequest();
             }
-
+            //f
 
             return View("~/Views/MobilleApp/Edit.cshtml", model);
         }
