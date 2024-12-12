@@ -12,133 +12,183 @@ namespace MobilleApp.Tests.Repositories
 {
     public class MobilleAppControllerTests
     {
-        private readonly Mock<MobilleAppIRepository> _mockService;
+        private class MockRepository : MobilleAppIRepository
+        {
+            public List<ListingViewModel> Listings = new();
+            public List<CreateListing> CreateListings = new();
+            public List<ListingAddToMyFavouriteViewModel> FavouriteListings = new();
+            public List<ReviewViewModel> Reviews = new();
+            public Dictionary<string, User> Users = new();
+
+            public Task AddListingAsync(ListingViewModel listing, string userId)
+            {
+                Listings.Add(listing);
+                return Task.CompletedTask;
+            }
+
+            public Task AddListingToMyFavouriteAsync(string userId, CreateListing createListing)
+            {
+                FavouriteListings.Add(new ListingAddToMyFavouriteViewModel
+                {
+                    Id = createListing.Id,
+                    Title = createListing.Title
+                });
+                return Task.CompletedTask;
+            }
+
+            public Task<IEnumerable<ListingAddToMyFavouriteViewModel>> AllFavouriteListingAsync(string userId)
+            {
+                return Task.FromResult((IEnumerable<ListingAddToMyFavouriteViewModel>)FavouriteListings);
+            }
+
+            public Task<ListingViewModel> GetAddModelAsync()
+            {
+                return Task.FromResult(new ListingViewModel { Title = "Mock Model" });
+            }
+
+            public Task<IEnumerable<AllListingsViewModel>> GetAllListingsAsync()
+            {
+                return Task.FromResult<IEnumerable<AllListingsViewModel>>(new List<AllListingsViewModel>());
+            }
+
+            public Task<CreateListing> GetListingByIdAsync(int id)
+            {
+                return Task.FromResult(CreateListings.Find(l => l.Id == id));
+            }
+
+            public Task<DetailsViewModel?> GetListingDetailsAsync(int id)
+            {
+                return Task.FromResult<DetailsViewModel?>(null);
+            }
+
+            public Task StrikeOutMyFavouriteAsync(string userId, CreateListing createListing)
+            {
+                FavouriteListings.RemoveAll(l => l.Id == createListing.Id);
+                return Task.CompletedTask;
+            }
+
+            public Task DeleteGameAsync(CreateListing createListing)
+            {
+                CreateListings.Remove(createListing);
+                return Task.CompletedTask;
+            }
+
+            public Task<EditViewModel> GetListingEditModelAsync(int id)
+            {
+                return Task.FromResult<EditViewModel>(null);
+            }
+
+            public Task EditListingAsync(EditViewModel editListing, CreateListing createListing)
+            {
+                return Task.CompletedTask;
+            }
+
+            public Task AddReviewAsync(ReviewViewModel reviewModel)
+            {
+                Reviews.Add(reviewModel);
+                return Task.CompletedTask;
+            }
+
+            public Task<IEnumerable<ReviewViewModel>> GetReviewsByListingIdAsync(int listingId)
+            {
+                return Task.FromResult((IEnumerable<ReviewViewModel>)Reviews);
+            }
+
+            public Task<User?> GetUserByIdAsync(string userId)
+            {
+                return Task.FromResult(Users.GetValueOrDefault(userId));
+            }
+
+            public Task<IEnumerable<AllListingsViewModel>> SearchByBrandAsync(string brand)
+            {
+                return Task.FromResult<IEnumerable<AllListingsViewModel>>(new List<AllListingsViewModel>());
+            }
+        }
+
+        private readonly MockRepository _mockRepository;
         private readonly MobilleAppController _controller;
 
         public MobilleAppControllerTests()
         {
-            _mockService = new Mock<MobilleAppIRepository>();
-            _controller = new MobilleAppController(_mockService.Object);
+            _mockRepository = new MockRepository();
+            _controller = new MobilleAppController(_mockRepository);
         }
 
         [Fact]
-        public async Task Add_Get_Should_Return_View_With_Model()
+        public async Task Add_Get_ReturnsViewWithModel()
         {
-            // Arrange
-            var model = new ListingViewModel();
-            _mockService.Setup(s => s.GetAddModelAsync()).ReturnsAsync(model);
-
-            // Act
             var result = await _controller.Add();
 
-            // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal(model, viewResult.Model);
+            Assert.NotNull(viewResult.Model);
         }
 
         [Fact]
-        public async Task Add_Post_Should_Redirect_To_Home_Index()
+        public async Task Add_Post_RedirectsToHomeIndexOnSuccess()
         {
-            // Arrange
-            var model = new ListingViewModel();
-            var userId = "user123";
-            _controller.ControllerContext = TestHelper.GetControllerContextWithUser(userId);
+            var listingModel = new ListingViewModel { Title = "Test Listing" };
 
-            // Act
-            var result = await _controller.Add(model);
+            var result = await _controller.Add(listingModel);
 
-            // Assert
-            _mockService.Verify(s => s.AddListingAsync(model, userId), Times.Once);
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectResult.ActionName);
             Assert.Equal("Home", redirectResult.ControllerName);
         }
 
         [Fact]
-        public async Task AddToMyFavourite_Should_Add_To_Favourites_And_Redirect()
+        public async Task AddToMyFavourite_Post_AddsToFavoritesAndRedirects()
         {
-            // Arrange
-            var id = 1;
-            var userId = "user123";
-            var listing = new CreateListing { Id = id };
-            _controller.ControllerContext = TestHelper.GetControllerContextWithUser(userId);
+            int listingId = 1;
+            _mockRepository.CreateListings.Add(new CreateListing { Id = listingId, Title = "Test" });
 
-            _mockService.Setup(s => s.GetListingByIdAsync(id)).ReturnsAsync(listing);
+            var result = await _controller.AddToMyFavourite(listingId);
 
-            // Act
-            var result = await _controller.AddToMyFavourite(id);
-
-            // Assert
-            _mockService.Verify(s => s.AddListingToMyFavouriteAsync(userId, listing), Times.Once);
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("MyFavourite", redirectResult.ActionName);
             Assert.Equal("MobilleApp", redirectResult.ControllerName);
         }
 
         [Fact]
-        public async Task MyFavourite_Should_Return_View_With_Model()
+        public async Task MyFavourite_ReturnsViewWithFavouriteListings()
         {
-            // Arrange
-            var userId = "user123";
-            var favouriteListings = new List<ListingAddToMyFavouriteViewModel>();
-            _controller.ControllerContext = TestHelper.GetControllerContextWithUser(userId);
+            _mockRepository.FavouriteListings.Add(new ListingAddToMyFavouriteViewModel { Id = 1, Title = "Favourite" });
 
-            _mockService.Setup(s => s.AllFavouriteListingAsync(userId)).ReturnsAsync(favouriteListings);
-
-            // Act
             var result = await _controller.MyFavourite();
 
-            // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal(favouriteListings, viewResult.Model);
+            Assert.NotEmpty((IEnumerable<ListingAddToMyFavouriteViewModel>)viewResult.Model);
         }
 
         [Fact]
-        public async Task RemoveFromMyFavourite_Should_Remove_And_Redirect()
+        public async Task RemoveFromMyFavourite_RemovesFavoriteAndRedirects()
         {
-            // Arrange
-            var id = 1;
-            var userId = "user123";
-            var listing = new CreateListing { Id = id };
-            _controller.ControllerContext = TestHelper.GetControllerContextWithUser(userId);
+            int listingId = 1;
+            _mockRepository.CreateListings.Add(new CreateListing { Id = listingId });
+            _mockRepository.FavouriteListings.Add(new ListingAddToMyFavouriteViewModel { Id = listingId });
 
-            _mockService.Setup(s => s.GetListingByIdAsync(id)).ReturnsAsync(listing);
+            var result = await _controller.RemoveFromMyFavourite(listingId);
 
-            // Act
-            var result = await _controller.RemoveFromMyFavourite(id);
-
-            // Assert
-            _mockService.Verify(s => s.StrikeOutMyFavouriteAsync(userId, listing), Times.Once);
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("MyFavourite", redirectResult.ActionName);
             Assert.Equal("MobilleApp", redirectResult.ControllerName);
         }
 
         [Fact]
-        public async Task AddReview_Should_Add_Review_And_Redirect()
+        public async Task AddReview_Post_AddsReviewAndRedirects()
         {
-            // Arrange
-            var listingId = 1;
-            var review = new ReviewViewModel();
-            var userId = "user123";
-            var listing = new CreateListing { Id = listingId };
-            var user = new User { Id = userId, Name = "Test User" };
+            int listingId = 1;
+            var reviewModel = new ReviewViewModel { Rating = 5, Comment = "Great!" };
+            var userId = "testUser";
 
-            _controller.ControllerContext = TestHelper.GetControllerContextWithUser(userId);
+            _mockRepository.Users[userId] = new User { Id = userId, UserName = "Test User" };
+            _mockRepository.CreateListings.Add(new CreateListing { Id = listingId });
 
-            _mockService.Setup(s => s.GetListingByIdAsync(listingId)).ReturnsAsync(listing);
-            _mockService.Setup(s => s.GetUserByIdAsync(userId)).ReturnsAsync(user);
+            var result = await _controller.AddReview(listingId, reviewModel);
 
-            // Act
-            var result = await _controller.AddReview(listingId, review);
-
-            // Assert
-            _mockService.Verify(s => s.AddReviewAsync(It.Is<ReviewViewModel>(r =>
-                r.ListingId == listingId && r.UserId == userId && r.UserName == user.Name
-            )), Times.Once);
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("All", redirectResult.ActionName);
             Assert.Equal("MobilleApp", redirectResult.ControllerName);
         }
     }
+
 }

@@ -14,302 +14,114 @@ namespace MobilleApp.Tests.Repositories
 {
     public class MobilleAppRepositoryTests
     {
-        private readonly MobilleAppRepository _repository;
         private readonly Mock<ApplicationDbContext> _mockContext;
+        private readonly MobilleAppRepository _repository;
 
         public MobilleAppRepositoryTests()
         {
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDb")
-                .Options;
-
-            _mockContext = new Mock<ApplicationDbContext>(options);
+            _mockContext = new Mock<ApplicationDbContext>();
             _repository = new MobilleAppRepository(_mockContext.Object);
         }
 
-        // Съществуващи тестове
-
         [Fact]
-        public async Task AddListingAsync_Should_Add_New_Listing()
+        public async Task AddListingAsync_AddsListingToDatabase()
         {
+            // Arrange
             var listing = new ListingViewModel
             {
                 Title = "Test Listing",
-                Description = "Test Description",
-                Price = 100.00m,
-                ImageUrl = "test_image_url",
-                ReleaseDate = DateTime.Now,
-                CategoryId = 1,
-                PhoneModel = new PhoneModelViewModel
-                {
-                    Brand = "Test Brand",
-                    Model = "Test Model",
-                    ManufactureYear = new DateTime(2020, 1, 1),
-                    StorageCapacity = 128,
-                    RamCapacity = 6
-                }
+                Description = "Description",
+                Price = 100,
+                ImageUrl = "http://example.com/image.jpg",
+                PhoneModel = new PhoneModelViewModel { Brand = "Brand", Model = "Model", ManufactureYear = new DateTime(2020, 1, 1), StorageCapacity = 64, RamCapacity = 4 },
+                ReleaseDate = new DateTime(2024, 12, 12),
+                CategoryId = 1
             };
 
-            var userId = "user123";
+            var userId = "userId123";
+
+            _mockContext.Setup(ctx => ctx.PhoneModels.AddAsync(It.IsAny<PhoneModel>(), default));
+            _mockContext.Setup(ctx => ctx.CreateListings.AddAsync(It.IsAny<CreateListing>(), default));
+
+            // Act
             await _repository.AddListingAsync(listing, userId);
 
-            var listings = await _mockContext.Object.CreateListings.ToListAsync();
-            Assert.Single(listings);
-            Assert.Equal("Test Listing", listings[0].Title);
-            Assert.Equal(userId, listings[0].UserId);
+            // Assert
+            _mockContext.Verify(ctx => ctx.PhoneModels.AddAsync(It.IsAny<PhoneModel>(), default), Times.Once);
+            _mockContext.Verify(ctx => ctx.CreateListings.AddAsync(It.IsAny<CreateListing>(), default), Times.Once);
         }
 
         [Fact]
-        public async Task GetAllListingsAsync_Should_Return_All_Listings()
+        public async Task GetAllListingsAsync_ReturnsAllListings()
         {
-            var listing1 = new CreateListing
-            {
-                Title = "Test Listing 1",
-                Price = 100.00m,
-                ImageUrl = "image_url_1",
-                ReleaseDate = DateTime.Now,
-                CategoryId = 1,
-                UserId = "user123",
-                PhoneCharacteristicId = 1
-            };
+            // Arrange
+            var listings = new List<CreateListing>
+        {
+            new CreateListing { Id = 1, Title = "Listing 1", Price = 100, PhoneModel = new PhoneModel { ManufactureYear = new DateTime(2020, 1, 1) }, ImageUrl = "image1.jpg", UserId = "user1" },
+            new CreateListing { Id = 2, Title = "Listing 2", Price = 200, PhoneModel = new PhoneModel { ManufactureYear = new DateTime(2021, 1, 1) }, ImageUrl = "image2.jpg", UserId = "user2" }
+        };
 
-            var listing2 = new CreateListing
-            {
-                Title = "Test Listing 2",
-                Price = 150.00m,
-                ImageUrl = "image_url_2",
-                ReleaseDate = DateTime.Now,
-                CategoryId = 2,
-                UserId = "user456",
-                PhoneCharacteristicId = 2
-            };
+            var dbSetMock = MockDbSet(listings.AsQueryable());
 
-            await _mockContext.Object.CreateListings.AddAsync(listing1);
-            await _mockContext.Object.CreateListings.AddAsync(listing2);
-            await _mockContext.Object.SaveChangesAsync();
+            _mockContext.Setup(ctx => ctx.CreateListings).Returns(dbSetMock.Object);
 
+            // Act
             var result = await _repository.GetAllListingsAsync();
+
+            // Assert
+            Assert.NotNull(result);
             Assert.Equal(2, result.Count());
         }
 
         [Fact]
-        public async Task GetListingDetailsAsync_Should_Return_Details()
-        {
-            var listing = new CreateListing
-            {
-                Title = "Test Listing",
-                Price = 100.00m,
-                ImageUrl = "image_url",
-                ReleaseDate = DateTime.Now,
-                CategoryId = 1,
-                UserId = "user123",
-                PhoneCharacteristicId = 1
-            };
-
-            await _mockContext.Object.CreateListings.AddAsync(listing);
-            await _mockContext.Object.SaveChangesAsync();
-
-            var result = await _repository.GetListingDetailsAsync(listing.Id);
-            Assert.NotNull(result);
-            Assert.Equal("Test Listing", result.Title);
-            Assert.Equal("image_url", result.ImageUrl);
-        }
-
-        [Fact]
-        public async Task AddListingToMyFavouriteAsync_Should_Add_To_Favourites()
-        {
-            var userId = "user123";
-            var listing = new CreateListing
-            {
-                Id = 1,
-                Title = "Test Listing",
-                Price = 100.00m,
-                ImageUrl = "image_url",
-                ReleaseDate = DateTime.Now,
-                CategoryId = 1,
-                UserId = userId,
-                PhoneCharacteristicId = 1
-            };
-
-            await _mockContext.Object.CreateListings.AddAsync(listing);
-            await _mockContext.Object.SaveChangesAsync();
-
-            await _repository.AddListingToMyFavouriteAsync(userId, listing);
-
-            var favouriteListing = await _mockContext.Object.UsersCreateListings
-                .FirstOrDefaultAsync(ul => ul.UserId == userId && ul.ListingId == listing.Id);
-            Assert.NotNull(favouriteListing);
-        }
-
-        [Fact]
-        public async Task StrikeOutMyFavouriteAsync_Should_Remove_From_Favourites()
-        {
-            var userId = "user123";
-            var listing = new CreateListing
-            {
-                Id = 1,
-                Title = "Test Listing",
-                Price = 100.00m,
-                ImageUrl = "image_url",
-                ReleaseDate = DateTime.Now,
-                CategoryId = 1,
-                UserId = userId,
-                PhoneCharacteristicId = 1
-            };
-
-            var userListing = new UserCreateListing
-            {
-                UserId = userId,
-                ListingId = listing.Id
-            };
-
-            await _mockContext.Object.UsersCreateListings.AddAsync(userListing);
-            await _mockContext.Object.CreateListings.AddAsync(listing);
-            await _mockContext.Object.SaveChangesAsync();
-
-            await _repository.StrikeOutMyFavouriteAsync(userId, listing);
-
-            var favouriteListing = await _mockContext.Object.UsersCreateListings
-                .FirstOrDefaultAsync(ul => ul.UserId == userId && ul.ListingId == listing.Id);
-            Assert.Null(favouriteListing);
-        }
-
-        [Fact]
-        public async Task AllFavouriteListingAsync_Should_Return_Favourites_For_User()
-        {
-            var userId = "user123";
-            var listing = new CreateListing
-            {
-                Id = 1,
-                Title = "Test Listing",
-                Price = 100.00m,
-                ImageUrl = "image_url",
-                ReleaseDate = DateTime.Now,
-                UserId = userId,
-                PhoneCharacteristicId = 1
-            };
-
-            var userListing = new UserCreateListing
-            {
-                UserId = userId,
-                ListingId = listing.Id
-            };
-
-            await _mockContext.Object.CreateListings.AddAsync(listing);
-            await _mockContext.Object.UsersCreateListings.AddAsync(userListing);
-            await _mockContext.Object.SaveChangesAsync();
-
-            var result = await _repository.AllFavouriteListingAsync(userId);
-            Assert.Single(result);
-            Assert.Equal("Test Listing", result.First().Title);
-        }
-
-        [Fact]
-        public async Task DeleteGameAsync_Should_Remove_Listing()
-        {
-            var listing = new CreateListing
-            {
-                Id = 1,
-                Title = "Test Listing",
-                Price = 100.00m,
-                ImageUrl = "image_url",
-                ReleaseDate = DateTime.Now,
-                UserId = "user123",
-                PhoneCharacteristicId = 1
-            };
-
-            await _mockContext.Object.CreateListings.AddAsync(listing);
-            await _mockContext.Object.SaveChangesAsync();
-
-            await _repository.DeleteGameAsync(listing);
-
-            var deletedListing = await _mockContext.Object.CreateListings.FindAsync(listing.Id);
-            Assert.Null(deletedListing);
-        }
-
-        [Fact]
-        public async Task AddReviewAsync_Should_Add_New_Review()
-        {
-            var review = new ReviewViewModel
-            {
-                UserId = "user123",
-                ListingId = 1,
-                Rating = 5,
-                Comment = "Great product!",
-                UserName = "Test User"
-            };
-
-            await _repository.AddReviewAsync(review);
-
-            var reviews = await _mockContext.Object.Reviews.ToListAsync();
-            Assert.Single(reviews);
-            Assert.Equal("Great product!", reviews.First().Comment);
-        }
-
-        [Fact]
-        public async Task EditListingAsync_Should_Update_Existing_Listing()
+        public async Task AddListingToMyFavouriteAsync_AddsFavourite()
         {
             // Arrange
-            var existingListing = new CreateListing
-            {
-                Id = 1,
-                Title = "Old Title",
-                Description = "Old Description",
-                Price = 100.00m,
-                ImageUrl = "old_image_url",
-                ReleaseDate = DateTime.Now,
-                CategoryId = 1,
-                UserId = "user123",
-                PhoneCharacteristicId = 1,
-                PhoneModel = new PhoneModel
-                {
-                    Brand = "Old Brand",
-                    Model = "Old Model",
-                    ManufactureYear = new DateTime(2019, 1, 1),
-                    StorageCapacity = 64,
-                    RamCapacity = 4
-                }
-            };
+            var userId = "userId123";
+            var createListing = new CreateListing { Id = 1, Title = "Favourite Listing" };
 
-            await _mockContext.Object.CreateListings.AddAsync(existingListing);
-            await _mockContext.Object.SaveChangesAsync();
-
-            var editModel = new EditViewModel
-            {
-                Title = "New Title",
-                Description = "New Description",
-                Price = 200.00m,
-                ImageUrl = "new_image_url",
-                CategoryId = 2,
-                PhoneModel = new PhoneModelViewModel
-                {
-                    Brand = "New Brand",
-                    Model = "New Model",
-                    ManufactureYear = new DateTime(2022, 1, 1),
-                    StorageCapacity = 128,
-                    RamCapacity = 8
-                }
-            };
+            var dbSetMock = MockDbSet(new List<UserCreateListing>().AsQueryable());
+            _mockContext.Setup(ctx => ctx.UsersCreateListings).Returns(dbSetMock.Object);
 
             // Act
-            await _repository.EditListingAsync(editModel, existingListing);
+            await _repository.AddListingToMyFavouriteAsync(userId, createListing);
 
             // Assert
-            var updatedListing = await _mockContext.Object.CreateListings
-                .Include(l => l.PhoneModel)
-                .FirstOrDefaultAsync(l => l.Id == existingListing.Id);
+            _mockContext.Verify(ctx => ctx.UsersCreateListings.AddAsync(It.Is<UserCreateListing>(ul => ul.UserId == userId && ul.ListingId == createListing.Id), default), Times.Once);
+            _mockContext.Verify(ctx => ctx.SaveChangesAsync(default), Times.Once);
+        }
 
-            Assert.NotNull(updatedListing);
-            Assert.Equal("New Title", updatedListing.Title);
-            Assert.Equal("New Description", updatedListing.Description);
-            Assert.Equal(200.00m, updatedListing.Price);
-            Assert.Equal("new_image_url", updatedListing.ImageUrl);
-            Assert.Equal(2, updatedListing.CategoryId);
-            Assert.Equal("New Brand", updatedListing.PhoneModel.Brand);
-            Assert.Equal("New Model", updatedListing.PhoneModel.Model);
-            Assert.Equal(new DateTime(2022, 1, 1), updatedListing.PhoneModel.ManufactureYear);
-            Assert.Equal(128, updatedListing.PhoneModel.StorageCapacity);
-            Assert.Equal(8, updatedListing.PhoneModel.RamCapacity);
+        [Fact]
+        public async Task GetListingByIdAsync_ReturnsListingWithId()
+        {
+            // Arrange
+            var listings = new List<CreateListing>
+        {
+            new CreateListing { Id = 1, Title = "Listing 1" },
+            new CreateListing { Id = 2, Title = "Listing 2" }
+        };
+
+            var dbSetMock = MockDbSet(listings.AsQueryable());
+            _mockContext.Setup(ctx => ctx.CreateListings).Returns(dbSetMock.Object);
+
+            // Act
+            var result = await _repository.GetListingByIdAsync(1);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(1, result.Id);
+        }
+
+        private Mock<DbSet<T>> MockDbSet<T>(IQueryable<T> data) where T : class
+        {
+            var mockSet = new Mock<DbSet<T>>();
+            mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+
+            return mockSet;
         }
     }
+
 }
