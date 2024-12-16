@@ -99,7 +99,7 @@ namespace SellingMobileApp.Web.Controllers
             if (listing == null)
             {
                 TempData["Error"] = "Обявата не съществува.";
-                return RedirectToAction("All", "MobilleApp"); 
+                return RedirectToAction("All", "Listings"); 
             }
 
             string userId = GetUserId();
@@ -117,7 +117,7 @@ namespace SellingMobileApp.Web.Controllers
             await service.AddReviewAsync(reviewModel);
 
             TempData["Message"] = "Отзивът беше успешно добавен!";
-            return RedirectToAction("All", "MobilleApp");
+            return RedirectToAction("All", "Listings");
         }
 
     }

@@ -16,7 +16,7 @@ namespace MobilleApp.Tests.Repositories
 {
     public class ManageListingsControllerTests
     {
-        /*private readonly Mock<MobilleAppIRepository> _mockRepository;
+        private readonly Mock<MobilleAppIRepository> _mockRepository;
         private readonly ManageListingsController _controller;
 
         public ManageListingsControllerTests()
@@ -40,7 +40,7 @@ namespace MobilleApp.Tests.Repositories
         }
 
         [Fact]
-        public async Task Delete_Get_ReturnsUnauthorizedIfUserNotOwner()
+        public async Task Delete_Get_ReturnsUnauthorizedIfUserNotOwner()    
         {
             int listingId = 1;
             var listing = new CreateListing { Id = listingId, UserId = "AnotherUser" };
@@ -175,6 +175,6 @@ namespace MobilleApp.Tests.Repositories
                 return context;
             }
         }
-    }*/
+    }
 }
 

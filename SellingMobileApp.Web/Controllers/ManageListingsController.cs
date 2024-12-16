@@ -62,7 +62,7 @@ namespace SellingMobileApp.Web.Controllers
             await service.DeleteGameAsync(listing);
 
             TempData["Message"] = "Обявата беше успешно изтрита!";
-            return View("~/Views/MobilleApp/All.cshtml", model);
+            return RedirectToAction("All", "Listings");
         }
 
         [HttpGet]
@@ -84,14 +84,7 @@ namespace SellingMobileApp.Web.Controllers
         [ValidateAntiForgeryToken]
         [Route("Edit/{id}")]
         public async Task<IActionResult> Edit(int id, EditViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                
-                model.CategoryListings = (await service.GetListingEditModelAsync(id)).CategoryListings;
-                return View("~/Views/MobilleApp/Edit.cshtml", model);
-            }
-
+        { 
             var createListing = await service.GetListingByIdAsync(id);
             if (createListing == null)
             {
