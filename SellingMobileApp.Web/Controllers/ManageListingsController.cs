@@ -59,6 +59,8 @@ namespace SellingMobileApp.Web.Controllers
                 return Unauthorized();
             }
 
+            
+
             await service.DeleteGameAsync(listing);
 
             TempData["Message"] = "Обявата беше успешно изтрита!";

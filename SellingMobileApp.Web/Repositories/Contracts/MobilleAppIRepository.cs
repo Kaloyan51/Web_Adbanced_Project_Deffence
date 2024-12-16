@@ -29,6 +29,8 @@ namespace SellingMobileApp.Web.Repositories.Contracts
         Task AddReviewAsync(ReviewViewModel reviewModel);
         Task<IEnumerable<ReviewViewModel>> GetReviewsByListingIdAsync(int listingId);
 
+        
+        
         Task<User?> GetUserByIdAsync(string userId);
 
         Task<IEnumerable<AllListingsViewModel>> SearchByBrandAsync(string brand);

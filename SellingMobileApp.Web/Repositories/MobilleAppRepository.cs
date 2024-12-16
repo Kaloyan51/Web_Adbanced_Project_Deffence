@@ -200,6 +200,14 @@ namespace SellingMobileApp.Web.Repositories
 
         public Task DeleteGameAsync(CreateListing createListing)
         {
+            var relatedReviews = context.Reviews
+      .Where(r => r.ListingId == createListing.Id);
+
+            if (relatedReviews.Any())
+            {
+                context.Reviews.RemoveRange(relatedReviews);
+            }
+
             context.CreateListings.Remove(createListing);
             return context.SaveChangesAsync();
         }
