@@ -31,10 +31,11 @@
 
             <div class="row gx-0">
                 <div class="col-12 px-1 mb-2">
-                    <form asp-action="RemoveFromMyFavourite" method="post">
+                    <form action="@Url.Action("RemoveFromMyFavourite", "MyFavourites")" method="post" class="mb-2">
                         <input type="hidden" name="id" value="@listing.Id" />
                         <button type="submit" class="btn btn-danger btn-sm w-100 fw-bold rounded">Премахни от любими</button>
                     </form>
+
                 </div>
 
                 <div class="col-12 px-1">

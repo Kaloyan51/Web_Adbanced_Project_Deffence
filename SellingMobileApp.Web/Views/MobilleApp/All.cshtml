@@ -51,7 +51,7 @@
                         <a href="@Url.Action("Details", "Listings", new { id = listing.Id })" class="btn btn-primary btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
                     </div>
                     <div class="col-12 px-1">
-                        <form action="@Url.Action("AddToMyFavourite", "MobilleApp")" method="post" class="mb-2">
+                        <form action="@Url.Action("AddToMyFavourite", "MyFavourites")" method="post" class="mb-2">
                             <input type="hidden" name="id" value="@listing.Id" />
                             <button type="submit" class="btn btn-outline-success btn-sm w-100 fw-bold rounded">Добави в любими</button>
                         </form>
@@ -63,7 +63,7 @@
                 else
                 {
                     <div class="col-12 px-1">
-                        <form action="@Url.Action("AddToMyFavourite", "MobilleApp")" method="post" class="mb-2">
+                        <form action="@Url.Action("AddToMyFavourite", "MyFavourites")" method="post" class="mb-2">
                             <input type="hidden" name="id" value="@listing.Id" />
                             <button type="submit" class="btn btn-outline-success btn-sm w-100 fw-bold rounded">Добави в любими</button>
                         </form>
