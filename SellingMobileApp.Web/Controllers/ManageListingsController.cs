@@ -47,10 +47,7 @@ namespace SellingMobileApp.Web.Controllers
         {
             var listing = await service.GetListingByIdAsync(id);
 
-            /*if (listing == null)
-            {
-                return BadRequest();
-            }*/
+            
 
             string userId = GetUserId();
 
@@ -64,7 +61,7 @@ namespace SellingMobileApp.Web.Controllers
             await service.DeleteGameAsync(listing);
 
             TempData["Message"] = "Обявата беше успешно изтрита!";
-            return RedirectToAction("All", "Listings");
+            return View("~/Views/MobilleApp/SuccessfullyDelete.cshtml");
         }
 
         [HttpGet]
@@ -96,7 +93,7 @@ namespace SellingMobileApp.Web.Controllers
             await service.EditListingAsync(model, createListing);
 
             TempData["Message"] = "Обявата беше успешно редактирана!";
-            return RedirectToAction("All", "Listings");
+            return View("~/Views/MobilleApp/SuccessfullyEdit.cshtml");
         }
     }
 }

@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Успешно редактиране";
+}
+
+<div class="container mt-5">
+    <div class="card mx-auto text-center shadow" style="max-width: 500px; border: 1px solid #dee2e6;">
+        <div class="card-body p-4">
+            <h2 class="text-success mb-4" style="font-family: 'Arial', sans-serif; font-weight: bold;">@ViewData["Title"]</h2>
+            <p class="fs-5 mb-4">Обявата беше успешно редактирана!</p>
+            <a asp-action="All" asp-controller="Listings" class="btn btn-primary btn-lg w-100">Продължи</a>
+        </div>
+    </div>
+</div>
