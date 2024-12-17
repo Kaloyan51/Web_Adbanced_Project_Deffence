@@ -110,12 +110,12 @@ namespace SellingMobileApp.Web.Repositories
        })
        .ToListAsync();
 
-            if (!deviceTypes.Any())
+           /* if (!deviceTypes.Any())
             {
                 deviceTypes.Add(new DeviceTypeViewModel { Id = 1, Type = "Телефон" });
                 deviceTypes.Add(new DeviceTypeViewModel { Id = 2, Type = "Таблет" });
                 deviceTypes.Add(new DeviceTypeViewModel { Id = 3, Type = "Аксесоари" });
-            }
+            }*/
 
             var model =  new ListingViewModel{
                 CategoryListings = categories,

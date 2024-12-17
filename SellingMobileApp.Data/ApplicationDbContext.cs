@@ -71,8 +71,13 @@ namespace SellingMobileApp.Data
                 .HasData(
                 new Category { Id = 1, Name = "Нов" },
                 new Category { Id = 2, Name = "Употребяван" });
-                
 
+            builder.Entity<DeviceType>()
+           .HasData(
+               new DeviceType { Id = 1, Type = "Телефон" },
+               new DeviceType { Id = 2, Type = "Таблет" },
+               new DeviceType { Id = 3, Type = "Аксесоари" }
+           );
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

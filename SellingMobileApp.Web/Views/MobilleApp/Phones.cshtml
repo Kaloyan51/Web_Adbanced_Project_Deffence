@@ -1,6 +1,68 @@
-﻿@{
+﻿@model IEnumerable<SellingMobileApp.Data.Models.ViewModels.TypePhonesViewModel>
+
+@{
     ViewData["Title"] = "Телефони";
+    var currentUserId = ViewData["CurrentUserId"]?.ToString();
 }
 
-<h2>Телефони</h2>
-<p>Това е страницата с телефони.</p>
+<h2 class="text-center text-dark" style="font-family: 'Arial', sans-serif; font-weight: bold;">@ViewData["Title"]</h2>
+<hr />
+
+<div class="text-center row">
+    @foreach (var listing in Model)
+    {
+        <div class="card col-3 h-100" style="width: 20rem;">
+            @if (!string.IsNullOrEmpty(listing.ImageUrl))
+            {
+                <img src="@listing.ImageUrl" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" alt="Снимка на @listing.Title">
+            }
+            else
+            {
+                <img src="https://via.placeholder.com/200x200" class="card-img-top img-fluid" style="height: 200px; object-fit: contain;" alt="Placeholder Image">
+            }
+            <div class="card-body" style="height: calc(100% - 150px); overflow: auto;">
+                <h4 class="card-title mt-1">@listing.Title</h4>
+                <p>
+                    <strong>Цена:</strong> @listing.Price лв.<br />
+                    <strong>Дата на производство:</strong> @listing.ManufactureYear.ToString("dd.MM.yyyy'г.'")
+                </p>
+            </div>
+            <div class="row gx-0">
+                @if (currentUserId == listing.UserId)
+                {
+                    <div class="col-6 px-1">
+                        <a href="@Url.Action("Edit", "ManageListings", new { id = listing.Id })" class="btn btn-warning btn-sm mb-2 w-100 fw-bold rounded">Редактиране</a>
+                    </div>
+                    <div class="col-6 px-1">
+                        <a href="@Url.Action("Details", "Listings", new { id = listing.Id })" class="btn btn-primary btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
+                    </div>
+                    <div class="col-12 px-1">
+                        <form action="@Url.Action("AddToMyFavourite", "MobilleApp")" method="post" class="mb-2">
+                            <input type="hidden" name="id" value="@listing.Id" />
+                            <button type="submit" class="btn btn-outline-success btn-sm w-100 fw-bold rounded">Добави в любими</button>
+                        </form>
+                    </div>
+                    <div class="col-12 px-1">
+                        <a href="@Url.Action("Delete", "ManageListings", new { id = listing.Id })" class="btn btn-danger btn-sm w-100 fw-bold rounded">Изтриване</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12 px-1">
+                        <form action="@Url.Action("AddToMyFavourite", "MobilleApp")" method="post" class="mb-2">
+                            <input type="hidden" name="id" value="@listing.Id" />
+                            <button type="submit" class="btn btn-outline-success btn-sm w-100 fw-bold rounded">Добави в любими</button>
+                        </form>
+                    </div>
+                    <div class="col-12 px-1">
+                        <a href="@Url.Action("Details", "Listings", new { id = listing.Id })" class="btn btn-info btn-sm mb-2 w-100 fw-bold rounded">Детайли</a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
