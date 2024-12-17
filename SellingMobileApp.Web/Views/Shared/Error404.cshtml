@@ -1,0 +1,20 @@
+﻿@using SellingMobileApp.Web.ViewModels
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Page Not Found";
+}
+
+<div class="container mt-5 text-center">
+    <h1 class="text-danger">404</h1>
+    <h2>Страницата не беше намерена!</h2>
+    <p>Извинявайте, но страницата, която търсите, не съществува.</p>
+
+    @if (Model.ShowRequestId)
+    {
+        <p>
+            <strong>Request ID:</strong> <code>@Model.RequestId</code>
+        </p>
+    }
+
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Върни се към началната страница</a>
+</div>

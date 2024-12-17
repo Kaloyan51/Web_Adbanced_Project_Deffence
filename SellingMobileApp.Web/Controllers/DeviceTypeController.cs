@@ -71,21 +71,21 @@ namespace SellingMobileApp.Web.Controllers
             ViewData["CurrentUserId"] = currentUserId;
 
             var accessories = _context.CreateListings
-                .Where(l => l.DeviceType.Type == "Аксесоари")  // Използвай връзката към DeviceType
+                .Where(l => l.DeviceType.Type == "Аксесоари")  
                 .Select(l => new TypeAccessoriesViewModel
                 {
                     Id = l.Id,
                     Title = l.Title,
                     ImageUrl = l.ImageUrl,
                     Price = l.Price,
-                    ManufactureYear = l.ReleaseDate,  // Може да бъде "ReleaseDate" вместо "ManufactureYear"
+                    ManufactureYear = l.ReleaseDate, 
                     UserId = l.UserId,
-                    UserName = l.User.UserName,  // Получаваш UserName от User обекта
-                    DeviceType = l.DeviceType.Type  // Използвай Type от DeviceType
+                    UserName = l.User.UserName,  
+                    DeviceType = l.DeviceType.Type  
                 })
                 .ToList();
 
-            return View("~/Views/MobilleApp/Accessories.cshtml", accessories);  // Връщаш списък с обяви за аксесоари
+            return View("~/Views/MobilleApp/Accessories.cshtml", accessories);  
         }
     }
 }

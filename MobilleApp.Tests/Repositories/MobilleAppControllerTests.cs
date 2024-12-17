@@ -135,60 +135,7 @@ namespace MobilleApp.Tests.Repositories
             Assert.Equal("Home", redirectResult.ControllerName);
         }
 
-        [Fact]
-        public async Task AddToMyFavourite_Post_AddsToFavoritesAndRedirects()
-        {
-            int listingId = 1;
-            _mockRepository.CreateListings.Add(new CreateListing { Id = listingId, Title = "Test" });
-
-            var result = await _controller.AddToMyFavourite(listingId);
-
-            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("MyFavourite", redirectResult.ActionName);
-            Assert.Equal("MobilleApp", redirectResult.ControllerName);
-        }
-
-        [Fact]
-        public async Task MyFavourite_ReturnsViewWithFavouriteListings()
-        {
-            _mockRepository.FavouriteListings.Add(new ListingAddToMyFavouriteViewModel { Id = 1, Title = "Favourite" });
-
-            var result = await _controller.MyFavourite();
-
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.NotEmpty((IEnumerable<ListingAddToMyFavouriteViewModel>)viewResult.Model);
-        }
-
-        [Fact]
-        public async Task RemoveFromMyFavourite_RemovesFavoriteAndRedirects()
-        {
-            int listingId = 1;
-            _mockRepository.CreateListings.Add(new CreateListing { Id = listingId });
-            _mockRepository.FavouriteListings.Add(new ListingAddToMyFavouriteViewModel { Id = listingId });
-
-            var result = await _controller.RemoveFromMyFavourite(listingId);
-
-            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("MyFavourite", redirectResult.ActionName);
-            Assert.Equal("MobilleApp", redirectResult.ControllerName);
-        }
-
-        [Fact]
-        public async Task AddReview_Post_AddsReviewAndRedirects()
-        {
-            int listingId = 1;
-            var reviewModel = new ReviewViewModel { Rating = 5, Comment = "Great!" };
-            var userId = "testUser";
-
-            _mockRepository.Users[userId] = new User { Id = userId, UserName = "Test User" };
-            _mockRepository.CreateListings.Add(new CreateListing { Id = listingId });
-
-            var result = await _controller.AddReview(listingId, reviewModel);
-
-            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("All", redirectResult.ActionName);
-            Assert.Equal("MobilleApp", redirectResult.ControllerName);
-        }
+        
     }
 
 }

@@ -13,7 +13,7 @@ namespace SellingMobileApp.Web.Controllers
             service = mobileService;
         }
 
-        private string GetUserId()
+        protected string GetUserId()
         {
             return User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         }

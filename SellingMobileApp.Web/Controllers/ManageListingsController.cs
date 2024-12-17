@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SellingMobileApp.Data.Models.ViewModels;
 using SellingMobileApp.Web.Repositories.Contracts;
+using System.Diagnostics;
 
 namespace SellingMobileApp.Web.Controllers
 {
@@ -47,8 +48,6 @@ namespace SellingMobileApp.Web.Controllers
         {
             var listing = await service.GetListingByIdAsync(id);
 
-            
-
             string userId = GetUserId();
 
             if (listing.UserId != userId)
@@ -56,7 +55,6 @@ namespace SellingMobileApp.Web.Controllers
                 return Unauthorized();
             }
 
-            
 
             await service.DeleteGameAsync(listing);
 
@@ -87,13 +85,14 @@ namespace SellingMobileApp.Web.Controllers
             var createListing = await service.GetListingByIdAsync(id);
             if (createListing == null)
             {
-                return NotFound();
+                var requestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+                return View("Error404", new ErrorViewModel { RequestId = requestId });
             }
 
-            await service.EditListingAsync(model, createListing);
+           await service.EditListingAsync(model, createListing);
 
-            TempData["Message"] = "Обявата беше успешно редактирана!";
-            return View("~/Views/MobilleApp/SuccessfullyEdit.cshtml");
+           TempData["Message"] = "Обявата беше успешно редактирана!";
+           return View("~/Views/MobilleApp/SuccessfullyEdit.cshtml");
         }
     }
 }

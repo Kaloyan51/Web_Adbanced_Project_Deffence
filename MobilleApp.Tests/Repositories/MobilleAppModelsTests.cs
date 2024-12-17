@@ -19,7 +19,8 @@ namespace MobilleApp.Tests.Repositories
         private readonly ManageListingsController _manageListingsController;
         private readonly MobilleAppController _mobilleAppController;
         private readonly ListingsController _listingsController;
-        
+        private readonly MyFavouritesController _myFavouritesController;
+        private readonly ReviewController _reviewController;
 
         public MobilleAppModelsTests()
         {
@@ -109,7 +110,7 @@ namespace MobilleApp.Tests.Repositories
             _mockRepository.Setup(repo => repo.GetListingByIdAsync(id)).ReturnsAsync(listing);
             _mockRepository.Setup(repo => repo.AddListingToMyFavouriteAsync("user1", listing)).Returns(Task.CompletedTask);
 
-            var result = await _mobilleAppController.AddToMyFavourite(id);
+            var result = await _myFavouritesController.AddToMyFavourite(id);
 
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("MyFavourite", redirectResult.ActionName);
@@ -123,7 +124,7 @@ namespace MobilleApp.Tests.Repositories
             _mockRepository.Setup(repo => repo.GetListingByIdAsync(id)).ReturnsAsync(listing);
             _mockRepository.Setup(repo => repo.StrikeOutMyFavouriteAsync("user1", listing)).Returns(Task.CompletedTask);
 
-            var result = await _mobilleAppController.RemoveFromMyFavourite(id);
+            var result = await _myFavouritesController.RemoveFromMyFavourite(id);
 
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("MyFavourite", redirectResult.ActionName);
@@ -151,7 +152,7 @@ namespace MobilleApp.Tests.Repositories
             _mockRepository.Setup(repo => repo.AddReviewAsync(It.IsAny<ReviewViewModel>()))
                            .Returns(Task.CompletedTask);
 
-            var result = await _mobilleAppController.AddReview(reviewViewModel.ListingId, reviewViewModel);
+            var result = await _reviewController.AddReview(reviewViewModel.ListingId, reviewViewModel);
 
 
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
