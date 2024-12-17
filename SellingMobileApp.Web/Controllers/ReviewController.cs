@@ -1,41 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SellingMobileApp.Data.Models;
 using SellingMobileApp.Data.Models.ViewModels;
 using SellingMobileApp.Web.Repositories.Contracts;
 
 namespace SellingMobileApp.Web.Controllers
 {
-    public class MobilleAppController : BaseController
+    public class ReviewController : Controller
     {
         private readonly MobilleAppIRepository service;
 
-        public MobilleAppController(MobilleAppIRepository mobileService)
+        public ReviewController(MobilleAppIRepository mobileService)
         {
             service = mobileService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Add()
+        private string GetUserId()
         {
-            ListingViewModel model = await service.GetAddModelAsync();
-            return View(model);
+            return User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(ListingViewModel model)
-        {
-            /*if (!ModelState.IsValid)
-            {
-                model.CategoryListings = (await service.GetAddModelAsync()).CategoryListings;
-                return View(model);
-            }*/
-
-            string userId = GetUserId();
-            await service.AddListingAsync(model, userId);
-            return RedirectToAction("Index", "Home");
-        }
-
-       /* [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReview(int listingId, ReviewViewModel reviewModel)
         {
@@ -44,7 +27,7 @@ namespace SellingMobileApp.Web.Controllers
             if (listing == null)
             {
                 TempData["Error"] = "Обявата не съществува.";
-                return RedirectToAction("All", "Listings"); 
+                return RedirectToAction("All", "Listings");
             }
 
             string userId = GetUserId();
@@ -63,7 +46,6 @@ namespace SellingMobileApp.Web.Controllers
 
             TempData["Message"] = "Отзивът беше успешно добавен!";
             return RedirectToAction("All", "Listings");
-        }*/
-
+        }
     }
 }

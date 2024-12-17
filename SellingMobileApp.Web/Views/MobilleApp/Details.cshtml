@@ -71,7 +71,7 @@
     {
         <div class="mt-4">
             <h4>Добавете отзив</h4>
-            <form asp-action="AddReview" asp-controller="MobilleApp" method="post">
+            <form asp-action="AddReview" asp-controller="Review" method="post">
                 <input type="hidden" name="listingId" value="@ViewData["ListingId"]" />                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="mb-3">
                     <label for="Rating" class="form-label">Рейтинг (1-5):</label>
