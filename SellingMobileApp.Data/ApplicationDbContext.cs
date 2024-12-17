@@ -23,6 +23,12 @@ namespace SellingMobileApp.Data
         .HasForeignKey(r => r.ListingId)
         .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<CreateListing>()
+                .HasOne(c => c.DeviceType)              
+                .WithMany(d => d.Listings)             
+                .HasForeignKey(c => c.DeviceTypeId)    
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<User>().ToTable("Users");
 
             builder.Entity<User>().ToTable("Users").Property(u => u.Name).IsRequired();
@@ -89,5 +95,7 @@ namespace SellingMobileApp.Data
         public virtual DbSet<Review> Reviews { get; set; }
 
         public virtual DbSet<UserCreateListing> UsersCreateListings { get; set; }
+    
+        public virtual DbSet<DeviceType> DeviceTypes { get; set; }
     }
 }

@@ -44,7 +44,8 @@ namespace SellingMobileApp.Web.Repositories
                 UserId = userId,
                 ReleaseDate = DateTime.Now,
                 PhoneCharacteristicId = phoneModel.Id,
-                CategoryId = listing.CategoryId
+                CategoryId = listing.CategoryId,
+                DeviceTypeId = listing.DeviceTypeId,
             };
 
             await context.CreateListings.AddAsync(listingData);
@@ -101,8 +102,24 @@ namespace SellingMobileApp.Web.Repositories
                 })
                 .ToListAsync();
 
+            var deviceTypes = await context.DeviceTypes
+       .Select(dt => new DeviceTypeViewModel
+       {
+           Id = dt.Id,
+           Type = dt.Type,
+       })
+       .ToListAsync();
+
+            if (!deviceTypes.Any())
+            {
+                deviceTypes.Add(new DeviceTypeViewModel { Id = 1, Type = "Телефон" });
+                deviceTypes.Add(new DeviceTypeViewModel { Id = 2, Type = "Таблет" });
+                deviceTypes.Add(new DeviceTypeViewModel { Id = 3, Type = "Аксесоари" });
+            }
+
             var model =  new ListingViewModel{
-                CategoryListings = categories
+                CategoryListings = categories,
+                DeviceTypes = deviceTypes
             };
             return model;
         }

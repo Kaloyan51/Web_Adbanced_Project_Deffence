@@ -57,6 +57,12 @@ namespace SellingMobileApp.Data.Models
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; } = null!;
 
+        [Required]
+        public int DeviceTypeId { get; set; }
+
+        [ForeignKey("DeviceTypeId")]
+        public DeviceType DeviceType { get; set; } = null!;
+
         public virtual ICollection<UserCreateListing> UsersCreateListings { get; set; } = new List<UserCreateListing>();
 
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();

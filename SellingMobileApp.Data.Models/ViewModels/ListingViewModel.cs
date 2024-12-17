@@ -47,6 +47,7 @@ namespace SellingMobileApp.Data.Models.ViewModels
 
         public virtual IEnumerable<UserViewModel>? Users { get; set; }
 
-    
+        public int DeviceTypeId { get; set; } 
+        public IEnumerable<DeviceTypeViewModel>? DeviceTypes { get; set; }
     }
 }

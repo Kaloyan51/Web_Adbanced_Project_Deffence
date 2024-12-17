@@ -81,6 +81,14 @@
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
 
+    <div class="form-group mb-4">
+        <label asp-for="DeviceTypeId" class="form-label text-primary fw-bold">Тип на устройството</label>
+        <select asp-for="DeviceTypeId" class="form-control shadow-sm border-primary" asp-items="@(new SelectList(Model.DeviceTypes, "Id", "Type"))">
+            <option value="">Изберете тип на устройството</option>
+        </select>
+        <span asp-validation-for="DeviceTypeId" class="text-danger"></span>
+    </div>
+
     <div class="d-flex justify-content-between mt-4">
         <button type="submit" class="btn btn-success px-4 py-2" style="background-color: #28a745; border-color: #28a745;">Създай обява</button>
         <a href="@Url.Action("All", "Listings")" class="btn btn-outline-secondary px-4 py-2">Отказ</a>
